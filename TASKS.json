@@ -246,11 +246,14 @@
       "description": "Define OCR interface (base class) and implement first adapter (Tesseract). Interface returns raw text + confidence from an image.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "blocked",
+      "blocked_reason": "Tesseract wrapper and mocked adapter checks pass, but this Windows environment has no Tesseract executable on PATH. The official Windows installer SHA-256 matches the official GitHub release, yet a non-admin per-user silent install produced no executable; Chocolatey reports this shell is non-elevated. The required clean-receipt OCR integration test is skipped, so T1.4 acceptance is incomplete. Revisit when a Tesseract executable is installed or its path is available.",
       "dependencies": ["T0.2", "T1.2"],
       "expected_files": [
+        "pyproject.toml",
         "src/receipt_graveyard/ocr/base.py",
-        "src/receipt_graveyard/ocr/tesseract_engine.py"
+        "src/receipt_graveyard/ocr/tesseract_engine.py",
+        "tests/test_ocr.py"
       ],
       "acceptance_criteria": [
         "OCR interface defined with process(image) -> OCRResult",
@@ -369,11 +372,14 @@
       "description": "Load expense policy from YAML file. Validate against a JSON schema. Produce typed PolicyRule objects.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T1.1"],
       "expected_files": [
+        "DECISIONS.md",
+        "pyproject.toml",
         "src/receipt_graveyard/policy/parser.py",
-        "src/receipt_graveyard/policy/schema.py"
+        "src/receipt_graveyard/policy/schema.py",
+        "tests/test_policy_parser.py"
       ],
       "acceptance_criteria": [
         "Loads sample_policy.yaml successfully",
@@ -382,7 +388,9 @@
       ],
       "verification_steps": [
         "Unit tests: valid YAML → parsed rules; invalid → error with message"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: pytest tests/ -v passed 33 tests; one separate T1.4 Tesseract integration test skipped because the executable is unavailable. T3.1 sample-policy load, all six typed rule kinds, USD default/explicit currency, JSON Schema validity, malformed YAML, invalid rule parameters/type, duplicate IDs, and missing file checks passed. Ruff, pip check, and controller Validate passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T3.2",

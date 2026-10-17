@@ -213,3 +213,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** Represent money and quantities with `Decimal`. Receipt extraction fields, line-item quantity/amount details, and employee context metadata remain optional when source data is incomplete; a receipt's line-item collection defaults to empty. Line-item descriptions, employee IDs, policy rule IDs/types, and verdict receipt IDs/statuses are required. `PolicyRule` carries a rule `type` and generic `parameters`; T3.1 validates the type-specific schema. Verdict status values are `Approved`, `Flagged for Review`, and `Denied`, with empty-by-default reasons and rule IDs.
 **Rationale:** These contracts preserve incomplete OCR results, avoid binary floating-point arithmetic for money, and leave policy-rule validation to the task dedicated to the policy schema.
+
+## D21 — Version 1 Expense Policy Schema
+
+**Status:** ✅ Decided
+**Decision:** A policy document has `version: 1` and a non-empty `rules` list; `base_currency` is optional and defaults to USD. When supplied, it must be an uppercase ISO-style code. Rule IDs are unique. Supported rule types are `category_cap`, `non_reimbursable`, `city_daily_limit`, `context_limit`, `approval_threshold`, and `client_attendee_requirement`; each type has a closed, type-specific parameter schema. Unknown fields and rule types are rejected. YAML floating-point values in rule parameters are converted to `Decimal` after JSON Schema validation.
+**Rationale:** One versioned and strict format gives policy evaluation, sample data, and documentation a stable contract while preserving exact monetary values.

@@ -11,24 +11,16 @@ from uuid import UUID
 from receipt_graveyard.models.policy import PolicyRule
 from receipt_graveyard.models.receipt import LineItem, Receipt
 from receipt_graveyard.models.verdict import Verdict, VerdictStatus
+from receipt_graveyard.policy.context import (
+    ExpenseContext,
+    evaluate_context_violations,
+)
 from receipt_graveyard.policy.parser import ExpensePolicy
+from receipt_graveyard.policy.results import PolicyViolation
 
 
 class PolicyEvaluationError(ValueError):
     """Raised when an evaluator input cannot be interpreted safely."""
-
-
-@dataclass(frozen=True, slots=True)
-class PolicyViolation:
-    """A policy finding linked to the rule that produced it."""
-
-    rule_id: str
-    rule_type: str
-    message: str
-    status: VerdictStatus
-    amount: Decimal | None = None
-    limit: Decimal | None = None
-    item_description: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -187,12 +179,18 @@ def _non_reimbursable_violations(rule: PolicyRule, receipt: Receipt) -> list[Pol
     ]
 
 
-def evaluate_receipt(receipt: Receipt, policy: ExpensePolicy) -> PolicyEvaluation:
+def evaluate_receipt(
+    receipt: Receipt,
+    policy: ExpensePolicy,
+    *,
+    context: ExpenseContext | None = None,
+) -> PolicyEvaluation:
     """Evaluate category caps and item exclusions for one receipt.
 
     Cumulative daily, monthly, and trip totals require other submissions and are
-    intentionally outside this per-receipt API. Rules that need context or
-    aggregation are handled by their subsequent policy tasks.
+    intentionally outside this per-receipt API. Trip/office and city limits are
+    included when optional context metadata is supplied; missing metadata uses
+    the most restrictive configured limit.
     """
     violations: list[PolicyViolation] = []
     for rule in policy.rules:
@@ -200,4 +198,5 @@ def evaluate_receipt(receipt: Receipt, policy: ExpensePolicy) -> PolicyEvaluatio
             violations.extend(_category_cap_violations(receipt, policy, rule))
         elif rule.type == "non_reimbursable":
             violations.extend(_non_reimbursable_violations(rule, receipt))
+    violations.extend(evaluate_context_violations(receipt, policy, context))
     return PolicyEvaluation(receipt_id=receipt.id, violations=tuple(violations))

@@ -261,3 +261,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T2.4 loads ordered category keywords from `data/category_rules.json`. It checks a line-item description before the vendor, uses the first matching category, and falls back to the configured unknown category (default `other`). Callers may supply a different rules file or a validated loaded configuration.
 **Rationale:** Finance teams can tailor vendor/item mappings and category names without editing application code; stable ordering makes overlapping keyword matches deterministic.
+
+## D29 — Context-Aware Receipt Limits
+
+**Status:** ✅ Decided
+**Decision:** T3.3 accepts optional `ExpenseContext` metadata (`expense_type` and `city`) alongside a receipt. Trip/office limits are configurable `context_limit` policy rules; exceeding the selected context limit denies the receipt. City names match case-insensitively, with `other` as the generic fallback; missing context or a city with no generic entry uses the lowest configured limit. A city-limit breach on one receipt is flagged for review because per-receipt evaluation cannot account for all same-day spending.
+**Rationale:** Explicit metadata keeps employee identity separate from receipt OCR, conservative defaults avoid granting an allowance when context is unknown, and review status avoids treating a single receipt as a complete daily total.

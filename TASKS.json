@@ -442,9 +442,16 @@
       "description": "Differentiate meal-on-trip vs. meal-at-office. Apply city-specific daily limits.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T3.2"],
-      "expected_files": ["src/receipt_graveyard/policy/context.py"],
+      "expected_files": [
+        "src/receipt_graveyard/policy/context.py",
+        "src/receipt_graveyard/policy/results.py",
+        "src/receipt_graveyard/policy/evaluator.py",
+        "data/sample_policy.yaml",
+        "tests/test_policy_evaluator.py",
+        "DECISIONS.md"
+      ],
       "acceptance_criteria": [
         "Same receipt with different context (trip vs. office) yields different verdicts",
         "City-specific limits correctly applied",
@@ -453,7 +460,9 @@
       "verification_steps": [
         "Unit tests: same meal, trip context → allowed; office context → denied",
         "Unit tests: NYC limit vs. generic limit"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: full pytest passed 90 tests with one real Tesseract integration skipped for the recorded T1.4 blocker; context acceptance tests passed for trip versus office verdicts, NYC versus generic limits, missing trip/office context using the lowest configured cap, and missing city using the lowest configured city cap. Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T3.4",

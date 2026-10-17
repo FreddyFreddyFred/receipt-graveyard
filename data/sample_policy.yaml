@@ -28,6 +28,11 @@ rules:
     parameters:
       context: trip
       limit: 100.00
+  - rule_id: office.meal-limit
+    type: context_limit
+    parameters:
+      context: office
+      limit: 50.00
   - rule_id: meals.manager-approval
     type: approval_threshold
     category: meals

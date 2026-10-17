@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from receipt_graveyard.models.receipt import LineItem, Receipt
 from receipt_graveyard.models.verdict import VerdictStatus
+from receipt_graveyard.policy.context import ExpenseContext
 from receipt_graveyard.policy.evaluator import evaluate_receipt
 from receipt_graveyard.policy.parser import parse_policy
 
@@ -118,3 +119,89 @@ def test_missing_line_amount_is_flagged_for_review() -> None:
     assert result.status is VerdictStatus.FLAGGED_FOR_REVIEW
     assert result.violations[0].rule_id == "meals.daily-cap"
     assert result.violations[0].item_description == "Lunch"
+
+
+CONTEXT_POLICY = parse_policy(
+    """\
+version: 1
+rules:
+  - rule_id: meal.trip-limit
+    type: context_limit
+    parameters:
+      context: trip
+      limit: 100
+  - rule_id: meal.office-limit
+    type: context_limit
+    parameters:
+      context: office
+      limit: 50
+  - rule_id: meal.city-limit
+    type: city_daily_limit
+    parameters:
+      limits:
+        New York: 125
+        other: 75
+"""
+)
+
+
+def test_same_meal_is_allowed_on_trip_and_denied_at_office() -> None:
+    receipt = Receipt(currency="USD", total=Decimal(80))
+
+    trip_result = evaluate_receipt(
+        receipt,
+        CONTEXT_POLICY,
+        context=ExpenseContext(expense_type="trip", city="New York"),
+    )
+    office_result = evaluate_receipt(
+        receipt,
+        CONTEXT_POLICY,
+        context=ExpenseContext(expense_type="office", city="New York"),
+    )
+
+    assert trip_result.status is VerdictStatus.APPROVED
+    assert office_result.status is VerdictStatus.DENIED
+    assert office_result.violations[0].rule_id == "meal.office-limit"
+
+
+def test_missing_context_uses_lowest_trip_or_office_limit() -> None:
+    receipt = Receipt(currency="USD", total=Decimal(80))
+
+    result = evaluate_receipt(receipt, CONTEXT_POLICY)
+
+    assert result.status is VerdictStatus.DENIED
+    assert result.violations[0].rule_id == "meal.office-limit"
+    assert result.violations[0].limit == Decimal(50)
+
+
+def test_city_limit_uses_named_city_or_generic_other_limit() -> None:
+    receipt = Receipt(currency="USD", total=Decimal(100))
+
+    new_york = evaluate_receipt(
+        receipt,
+        CONTEXT_POLICY,
+        context=ExpenseContext(expense_type="trip", city="new york"),
+    )
+    generic_city = evaluate_receipt(
+        receipt,
+        CONTEXT_POLICY,
+        context=ExpenseContext(expense_type="trip", city="Boston"),
+    )
+
+    assert new_york.status is VerdictStatus.APPROVED
+    assert generic_city.status is VerdictStatus.FLAGGED_FOR_REVIEW
+    assert generic_city.violations[0].limit == Decimal(75)
+
+
+def test_missing_city_uses_most_restrictive_city_limit() -> None:
+    result = evaluate_receipt(
+        Receipt(currency="USD", total=Decimal(100)), CONTEXT_POLICY
+    )
+
+    city_violation = next(
+        violation
+        for violation in result.violations
+        if violation.rule_id == "meal.city-limit"
+    )
+    assert city_violation.limit == Decimal(75)
+    assert city_violation.status is VerdictStatus.FLAGGED_FOR_REVIEW

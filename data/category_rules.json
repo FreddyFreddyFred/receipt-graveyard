@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "unknown_category": "other",
+  "rules": [
+    {
+      "category": "medical",
+      "keywords": ["pharmacy", "first aid", "prescription"]
+    },
+    {
+      "category": "lodging",
+      "keywords": ["hotel", "hilton", "motel", "inn", "lodging"]
+    },
+    {
+      "category": "transport",
+      "keywords": ["uber", "lyft", "rideshare", "taxi", "cab", "rail ticket", "train ticket", "transit", "metro pass"]
+    },
+    {
+      "category": "supplies",
+      "keywords": ["staples", "office supply", "office supplies", "office snacks", "paper", "pens", "bookshop", "reference books"]
+    },
+    {
+      "category": "meals",
+      "keywords": ["cafe", "café", "deli", "bistro", "restaurant", "lunch", "dinner", "breakfast", "coffee", "sandwich", "tacos", "sushi", "grocer", "fruit basket", "team meal"]
+    }
+  ]
+}

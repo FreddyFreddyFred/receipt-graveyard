@@ -366,9 +366,13 @@
       "description": "Map receipt vendor/items to policy categories (meals, transport, lodging, supplies, etc.) using keyword-based rules.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T1.1"],
-      "expected_files": ["src/receipt_graveyard/extraction/categorizer.py"],
+      "expected_files": [
+        "src/receipt_graveyard/extraction/categorizer.py",
+        "data/category_rules.json",
+        "tests/test_categorizer.py"
+      ],
       "acceptance_criteria": [
         "Maps known vendors/items to correct categories",
         "Unknown vendors categorised as 'other'",
@@ -376,7 +380,9 @@
       ],
       "verification_steps": [
         "Unit tests: Uber → transport; Hilton → lodging; Staples → supplies; unknown → other"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: 12 focused category tests passed for required vendor mappings (Uber/Hilton/Staples), unknown fallback, item-before-vendor precedence, keyword boundaries, external JSON reconfiguration, and invalid config handling. Full pytest tests/ -v passed 86 tests with the separate real T1.4 Tesseract integration skipped; Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T3.1",

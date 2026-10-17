@@ -255,3 +255,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T2.2 uses a bundled USD-normalized rate table dated 2026-10-16. The currency module derives each USD-per-unit rate from the ECB's published EUR-base reference rates, detects the configured symbols and ISO codes, and rounds converted values to the destination currency's minor units. Missing or unsupported source currency defaults to the requested base with an explicit warning; conflicting markers raise an ambiguity error. The snapshot is for deterministic MVP checks, not historical transaction pricing or settlement.
 **Rationale:** A dated, sourced table follows the approved static-rate strategy, gives repeatable tests, and makes its limits visible to callers.
+
+## D28 — Configurable Category Keywords
+
+**Status:** ✅ Decided
+**Decision:** T2.4 loads ordered category keywords from `data/category_rules.json`. It checks a line-item description before the vendor, uses the first matching category, and falls back to the configured unknown category (default `other`). Callers may supply a different rules file or a validated loaded configuration.
+**Rationale:** Finance teams can tailor vendor/item mappings and category names without editing application code; stable ordering makes overlapping keyword matches deterministic.

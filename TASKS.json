@@ -1,0 +1,977 @@
+{
+  "meta": {
+    "project": "The Receipt Graveyard",
+    "version": "1.0.0",
+    "created": "2026-10-17",
+    "total_tasks": 45,
+    "status_legend": {
+      "pending": "Not started",
+      "in_progress": "Currently being worked on",
+      "verified": "Complete and verified",
+      "blocked": "Cannot proceed due to dependency or issue",
+      "needs_decision": "Awaiting user decision"
+    }
+  },
+  "tasks": [
+    {
+      "id": "T0.1",
+      "phase": 0,
+      "title": "Initialise Python project (pyproject.toml, requirements.txt, venv)",
+      "description": "Set up the Python project with build configuration, dependency list, virtual environment, and .gitignore.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": [],
+      "expected_files": ["pyproject.toml", "requirements.txt", ".gitignore"],
+      "acceptance_criteria": [
+        "Project installs in a fresh venv with pip install -e .",
+        "python -c \"import receipt_graveyard\" succeeds",
+        "Linting passes on skeleton"
+      ],
+      "verification_steps": [
+        "Create fresh venv and run pip install -e .",
+        "Run python -c \"import receipt_graveyard\"",
+        "Run ruff check . (if configured)"
+      ]
+    },
+    {
+      "id": "T0.2",
+      "phase": 0,
+      "title": "Create directory structure & package skeleton",
+      "description": "Create src/receipt_graveyard/ with all sub-packages (api, ocr, preprocessing, extraction, policy, detection, models, reports, utils, db, pipeline) and __init__.py files.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.1"],
+      "expected_files": [
+        "src/receipt_graveyard/__init__.py",
+        "src/receipt_graveyard/api/__init__.py",
+        "src/receipt_graveyard/ocr/__init__.py",
+        "src/receipt_graveyard/preprocessing/__init__.py",
+        "src/receipt_graveyard/extraction/__init__.py",
+        "src/receipt_graveyard/policy/__init__.py",
+        "src/receipt_graveyard/detection/__init__.py",
+        "src/receipt_graveyard/models/__init__.py",
+        "src/receipt_graveyard/reports/__init__.py",
+        "src/receipt_graveyard/utils/__init__.py",
+        "src/receipt_graveyard/db/__init__.py",
+        "src/receipt_graveyard/pipeline/__init__.py"
+      ],
+      "acceptance_criteria": [
+        "All sub-packages importable",
+        "Directory matches D13 layout in DECISIONS.md"
+      ],
+      "verification_steps": [
+        "python -c \"from receipt_graveyard.ocr import __name__\" for each sub-package",
+        "Compare directory tree to D13 spec"
+      ]
+    },
+    {
+      "id": "T0.3",
+      "phase": 0,
+      "title": "Configure logging framework",
+      "description": "Set up Python logging with structlog for structured JSON output at DEBUG/INFO/ERROR levels.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.1"],
+      "expected_files": ["src/receipt_graveyard/utils/logging.py"],
+      "acceptance_criteria": [
+        "Structured JSON logs emitted at DEBUG, INFO, and ERROR levels",
+        "Logger configurable via environment variable"
+      ],
+      "verification_steps": [
+        "Unit test writes log entries and asserts JSON structure"
+      ]
+    },
+    {
+      "id": "T0.4",
+      "phase": 0,
+      "title": "Set up test framework (pytest, fixtures, conftest)",
+      "description": "Configure pytest with conftest.py, shared fixtures, and a trivial smoke test.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.1", "T0.2"],
+      "expected_files": ["tests/conftest.py", "tests/test_smoke.py"],
+      "acceptance_criteria": [
+        "pytest discovers and runs a trivial smoke test",
+        "pytest exits 0"
+      ],
+      "verification_steps": [
+        "Run pytest tests/ -v and confirm exit code 0"
+      ]
+    },
+    {
+      "id": "T0.5",
+      "phase": 0,
+      "title": "Set up CI linting config (ruff / black / mypy)",
+      "description": "Configure ruff for linting, black for formatting, and mypy for type checking.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.1"],
+      "expected_files": [".ruff.toml"],
+      "acceptance_criteria": [
+        "ruff check . exits 0 on skeleton code",
+        "mypy src/ exits 0 on skeleton code"
+      ],
+      "verification_steps": [
+        "Run ruff check . and mypy src/; both exit 0"
+      ]
+    },
+    {
+      "id": "T1.1",
+      "phase": 1,
+      "title": "Define Pydantic data models",
+      "description": "Create Pydantic models for Receipt, LineItem, Verdict, Employee, and PolicyRule with validation.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.2"],
+      "expected_files": [
+        "src/receipt_graveyard/models/receipt.py",
+        "src/receipt_graveyard/models/verdict.py",
+        "src/receipt_graveyard/models/policy.py",
+        "src/receipt_graveyard/models/employee.py"
+      ],
+      "acceptance_criteria": [
+        "Models serialize/deserialize to JSON round-trip",
+        "Required fields validated; missing required field raises ValidationError",
+        "Optional fields default to None gracefully"
+      ],
+      "verification_steps": [
+        "Unit tests: create instances, serialize to JSON, deserialize back, assert equality",
+        "Unit tests: missing required fields raise ValidationError"
+      ]
+    },
+    {
+      "id": "T1.2",
+      "phase": 1,
+      "title": "Implement image preprocessing pipeline",
+      "description": "OpenCV-based pipeline: deskew, denoise, contrast enhancement, binarisation, crop/border removal.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.2"],
+      "expected_files": [
+        "src/receipt_graveyard/preprocessing/pipeline.py",
+        "src/receipt_graveyard/preprocessing/transforms.py"
+      ],
+      "acceptance_criteria": [
+        "Rotated test image produces upright output",
+        "Faded test image produces enhanced-contrast output",
+        "Pipeline is configurable (enable/disable individual transforms)"
+      ],
+      "verification_steps": [
+        "Unit test: feed rotated image, assert output is upright (orientation detection)",
+        "Visual inspection of before/after on sample images"
+      ]
+    },
+    {
+      "id": "T1.3",
+      "phase": 1,
+      "title": "Create sample test data",
+      "description": "Create ≥20 receipt images (clean, faded, rotated, handwritten, multi-currency, duplicates), sample policy YAML, employee manifest, and data/README.md.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.2"],
+      "expected_files": [
+        "data/sample_receipts/",
+        "data/sample_policy.yaml",
+        "data/employee_manifest.json",
+        "data/README.md"
+      ],
+      "acceptance_criteria": [
+        "≥20 receipt images present",
+        "Mix includes: clean, faded, rotated, handwritten, multi-currency",
+        "≥2 intentional duplicates seeded",
+        "Manifest maps receipts to ≥3 employees",
+        "README documents the dataset contents and expected outcomes"
+      ],
+      "verification_steps": [
+        "File count check in data/sample_receipts/",
+        "Review data/README.md for completeness"
+      ]
+    },
+    {
+      "id": "T1.4",
+      "phase": 1,
+      "title": "Implement OCR abstraction layer & first engine adapter",
+      "description": "Define OCR interface (base class) and implement first adapter (Tesseract). Interface returns raw text + confidence from an image.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.2", "T1.2"],
+      "expected_files": [
+        "src/receipt_graveyard/ocr/base.py",
+        "src/receipt_graveyard/ocr/tesseract_engine.py"
+      ],
+      "acceptance_criteria": [
+        "OCR interface defined with process(image) -> OCRResult",
+        "Tesseract adapter returns text from a clean receipt image",
+        "Adapter handles image preprocessing before OCR"
+      ],
+      "verification_steps": [
+        "Unit test: feed clean receipt image, assert extracted text contains expected vendor/total"
+      ]
+    },
+    {
+      "id": "T1.5",
+      "phase": 1,
+      "title": "Benchmark OCR engines & select default",
+      "description": "Benchmark ≥2 OCR engines on sample dataset. Compare accuracy and speed. Select default engine.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "needs_decision",
+      "dependencies": ["T1.4", "T1.3"],
+      "expected_files": ["docs/ocr_benchmark.md"],
+      "acceptance_criteria": [
+        "≥2 engines benchmarked on sample dataset",
+        "Accuracy and speed compared in a table",
+        "Default engine selected and documented"
+      ],
+      "verification_steps": [
+        "Review docs/ocr_benchmark.md",
+        "DECISIONS.md D2 updated with final choice"
+      ]
+    },
+    {
+      "id": "T2.1",
+      "phase": 2,
+      "title": "Implement receipt data extractor",
+      "description": "Parse OCR raw text to extract structured Receipt model fields: vendor, date, total, currency, line items, tax, tip.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1", "T1.4"],
+      "expected_files": ["src/receipt_graveyard/extraction/receipt_parser.py"],
+      "acceptance_criteria": [
+        "Extracts structured Receipt model from OCR text",
+        "Handles missing fields gracefully (nulls, not crashes)",
+        "Correctly identifies vendor name, date formats, totals"
+      ],
+      "verification_steps": [
+        "Unit tests with ≥5 diverse OCR text samples",
+        "Assert correct field extraction for each",
+        "Assert graceful nulls for incomplete data"
+      ]
+    },
+    {
+      "id": "T2.2",
+      "phase": 2,
+      "title": "Implement currency detection & normalisation",
+      "description": "Detect currency from symbols/codes in receipt text. Convert to base currency using static exchange rates.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1"],
+      "expected_files": [
+        "src/receipt_graveyard/extraction/currency.py",
+        "data/exchange_rates.json"
+      ],
+      "acceptance_criteria": [
+        "Detects $, €, £, ¥, and ISO codes (USD, EUR, GBP, JPY, etc.)",
+        "Converts amounts to base currency using static rates",
+        "Unknown currency defaults to base currency with a warning"
+      ],
+      "verification_steps": [
+        "Unit tests: convert GBP, EUR, JPY amounts; assert correct USD values"
+      ]
+    },
+    {
+      "id": "T2.3",
+      "phase": 2,
+      "title": "Implement line-item math reconciliation",
+      "description": "Sum extracted line items and compare to stated total. Flag discrepancies beyond configurable tolerance.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T2.1"],
+      "expected_files": ["src/receipt_graveyard/extraction/reconciliation.py"],
+      "acceptance_criteria": [
+        "Correctly sums line items and compares to total",
+        "Tolerance is configurable (default: $0.50 or 2%)",
+        "Missing line items → skip reconciliation gracefully"
+      ],
+      "verification_steps": [
+        "Unit tests: matching totals → pass; mismatched → flagged; missing items → skip"
+      ]
+    },
+    {
+      "id": "T2.4",
+      "phase": 2,
+      "title": "Implement category classifier",
+      "description": "Map receipt vendor/items to policy categories (meals, transport, lodging, supplies, etc.) using keyword-based rules.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1"],
+      "expected_files": ["src/receipt_graveyard/extraction/categorizer.py"],
+      "acceptance_criteria": [
+        "Maps known vendors/items to correct categories",
+        "Unknown vendors categorised as 'other'",
+        "Category list is configurable (not hardcoded)"
+      ],
+      "verification_steps": [
+        "Unit tests: Uber → transport; Hilton → lodging; Staples → supplies; unknown → other"
+      ]
+    },
+    {
+      "id": "T3.1",
+      "phase": 3,
+      "title": "Implement policy YAML parser & schema validator",
+      "description": "Load expense policy from YAML file. Validate against a JSON schema. Produce typed PolicyRule objects.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1"],
+      "expected_files": [
+        "src/receipt_graveyard/policy/parser.py",
+        "src/receipt_graveyard/policy/schema.py"
+      ],
+      "acceptance_criteria": [
+        "Loads sample_policy.yaml successfully",
+        "Invalid YAML produces PolicyValidationError with clear message",
+        "All rule types representable as PolicyRule objects"
+      ],
+      "verification_steps": [
+        "Unit tests: valid YAML → parsed rules; invalid → error with message"
+      ]
+    },
+    {
+      "id": "T3.2",
+      "phase": 3,
+      "title": "Implement per-receipt rule evaluator",
+      "description": "Evaluate a single Receipt against all applicable policy rules. Return violations list or pass.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T3.1", "T1.1"],
+      "expected_files": ["src/receipt_graveyard/policy/evaluator.py"],
+      "acceptance_criteria": [
+        "Evaluates receipt against category caps",
+        "Detects non-reimbursable items",
+        "Returns structured list of violations with rule references"
+      ],
+      "verification_steps": [
+        "Unit tests: under limit → pass; over cap → violation; non-reimbursable → denied"
+      ]
+    },
+    {
+      "id": "T3.3",
+      "phase": 3,
+      "title": "Implement context-aware rule logic (trip vs. office, city limits)",
+      "description": "Differentiate meal-on-trip vs. meal-at-office. Apply city-specific daily limits.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T3.2"],
+      "expected_files": ["src/receipt_graveyard/policy/context.py"],
+      "acceptance_criteria": [
+        "Same receipt with different context (trip vs. office) yields different verdicts",
+        "City-specific limits correctly applied",
+        "Missing context defaults to most restrictive rule"
+      ],
+      "verification_steps": [
+        "Unit tests: same meal, trip context → allowed; office context → denied",
+        "Unit tests: NYC limit vs. generic limit"
+      ]
+    },
+    {
+      "id": "T3.4",
+      "phase": 3,
+      "title": "Implement approval-threshold logic",
+      "description": "Auto-approve receipts below threshold; flag receipts above threshold as needs-manager-approval.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T3.2"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "Receipts below threshold auto-approved",
+        "Receipts above threshold marked needs_approval",
+        "Threshold is per-category and configurable via policy"
+      ],
+      "verification_steps": [
+        "Unit tests: $25 meal → auto; $250 dinner → needs_approval"
+      ]
+    },
+    {
+      "id": "T3.5",
+      "phase": 3,
+      "title": "Implement client-name & attendee-count validation",
+      "description": "Validate that meal receipts above policy threshold include client name and/or attendee count.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T3.2", "T2.1"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "Meal > threshold with client name → pass",
+        "Meal > threshold without client name → flagged",
+        "Attendee count required when policy specifies"
+      ],
+      "verification_steps": [
+        "Unit tests: meal >$100 with client → pass; without → flagged"
+      ]
+    },
+    {
+      "id": "T4.1",
+      "phase": 4,
+      "title": "Implement perceptual-hash duplicate detector",
+      "description": "Detect identical and near-identical receipt images using perceptual hashing (pHash).",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1"],
+      "expected_files": ["src/receipt_graveyard/detection/duplicate.py"],
+      "acceptance_criteria": [
+        "Same image → detected as duplicate",
+        "Same image resized/recompressed → detected as duplicate",
+        "Different receipt → not flagged"
+      ],
+      "verification_steps": [
+        "Unit tests: same image → dup; resized → dup; different → not dup"
+      ]
+    },
+    {
+      "id": "T4.2",
+      "phase": 4,
+      "title": "Implement semantic duplicate detector",
+      "description": "Detect receipts with matching (employee, vendor, date, amount) within configurable tolerance.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1", "T2.1"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "Exact match on (employee, vendor, date, amount) → flagged",
+        "Near match within tolerance → flagged with lower confidence",
+        "Different employee same receipt → not flagged"
+      ],
+      "verification_steps": [
+        "Unit tests: exact match → flagged; different date → not flagged"
+      ]
+    },
+    {
+      "id": "T4.3",
+      "phase": 4,
+      "title": "Implement cumulative limit tracker",
+      "description": "Track per-employee running totals by category, day, and month. Flag when cumulative limit exceeded.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1", "T3.2"],
+      "expected_files": ["src/receipt_graveyard/detection/accumulator.py"],
+      "acceptance_criteria": [
+        "Tracks running totals per employee per category per day and per month",
+        "Flags the receipt that causes limit to be exceeded",
+        "Previous receipts remain approved"
+      ],
+      "verification_steps": [
+        "Unit tests: 5 meals under individual limit but exceeding daily total → 5th flagged"
+      ]
+    },
+    {
+      "id": "T4.4",
+      "phase": 4,
+      "title": "Implement anomaly / fraud heuristics",
+      "description": "Flag suspicious patterns: round-number totals, just-under-limit amounts, weekend non-travel, math mismatches.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T2.1"],
+      "expected_files": ["src/receipt_graveyard/detection/anomaly.py"],
+      "acceptance_criteria": [
+        "Round-number total ($50.00) → flagged",
+        "Amount 95-99% of limit → flagged",
+        "Weekend expense on non-travel category → flagged",
+        "Each heuristic independently toggleable"
+      ],
+      "verification_steps": [
+        "Unit tests for each heuristic with positive and negative examples"
+      ]
+    },
+    {
+      "id": "T5.1",
+      "phase": 5,
+      "title": "Implement verdict assembler",
+      "description": "Combine policy evaluation, duplicate detection, anomaly flags, and cumulative tracking into final Verdict (Approved/Flagged/Denied) with reasons.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T3.2", "T4.1", "T4.2", "T4.3", "T4.4"],
+      "expected_files": ["src/receipt_graveyard/pipeline/verdict_assembler.py"],
+      "acceptance_criteria": [
+        "0 violations → Approved",
+        "Soft flags only → Flagged for Review with reasons",
+        "Hard deny rule triggered → Denied with reasons",
+        "Reasons are human-readable and reference specific policy rules"
+      ],
+      "verification_steps": [
+        "Unit tests: clean receipt → Approved; flagged → Flagged; denied → Denied"
+      ]
+    },
+    {
+      "id": "T5.2",
+      "phase": 5,
+      "title": "Implement per-employee monthly summary report generator",
+      "description": "Generate JSON + Markdown report per employee: total spent, breakdown by category, all verdicts, flags.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T5.1"],
+      "expected_files": ["src/receipt_graveyard/reports/summary.py"],
+      "acceptance_criteria": [
+        "Report includes: employee name, total spent, category breakdown, list of receipts with verdicts",
+        "JSON output validates against a schema",
+        "Markdown renders correctly"
+      ],
+      "verification_steps": [
+        "Unit test: feed 10 verdicts; assert correct totals and all verdicts present"
+      ]
+    },
+    {
+      "id": "T5.3",
+      "phase": 5,
+      "title": "Decide & implement report output formats",
+      "description": "Implement report formatter based on Decision D11 (JSON canonical + Markdown for review). Optionally add HTML.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "needs_decision",
+      "dependencies": ["T5.2"],
+      "expected_files": ["src/receipt_graveyard/reports/formatter.py"],
+      "acceptance_criteria": [
+        "At least JSON and Markdown outputs generated",
+        "Output files validated (JSON schema check, Markdown renders)"
+      ],
+      "verification_steps": [
+        "Generate report; validate JSON; render Markdown; verify content"
+      ]
+    },
+    {
+      "id": "T6.1",
+      "phase": 6,
+      "title": "Design SQLite schema",
+      "description": "Design and create SQLite schema: receipts, verdicts, employees, audit_log tables. Write initial migration.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.1"],
+      "expected_files": [
+        "src/receipt_graveyard/db/schema.sql",
+        "src/receipt_graveyard/db/migrations/001_initial.sql"
+      ],
+      "acceptance_criteria": [
+        "Schema creates all tables with appropriate columns and types",
+        "Foreign keys enforced",
+        "Migration runs idempotently (IF NOT EXISTS)"
+      ],
+      "verification_steps": [
+        "Run migration on fresh DB; sqlite3 test.db '.schema' shows expected tables"
+      ]
+    },
+    {
+      "id": "T6.2",
+      "phase": 6,
+      "title": "Implement data-access layer (CRUD)",
+      "description": "Repository pattern for receipts, verdicts, employees. Insert, query, update with transaction support.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T6.1", "T1.1"],
+      "expected_files": ["src/receipt_graveyard/db/repository.py"],
+      "acceptance_criteria": [
+        "Insert receipt → query by ID → matches",
+        "Update verdict → assert changed",
+        "Transactions used for multi-step writes"
+      ],
+      "verification_steps": [
+        "Unit tests: CRUD operations with assertions on returned data"
+      ]
+    },
+    {
+      "id": "T6.3",
+      "phase": 6,
+      "title": "Integrate persistence into pipeline",
+      "description": "Wire DB writes into the processing pipeline. Ensure idempotent re-processing.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T6.2", "T5.1"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "Full pipeline writes results to DB",
+        "Re-running same receipt is idempotent (no duplicate rows)"
+      ],
+      "verification_steps": [
+        "Integration test: process receipt → assert DB row; re-process → assert no duplicate"
+      ]
+    },
+    {
+      "id": "T7.1",
+      "phase": 7,
+      "title": "Implement batch processing pipeline orchestrator",
+      "description": "Orchestrate full pipeline: preprocess → OCR → extract → classify → evaluate → detect → verdict → persist. Process entire folder of receipts.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T1.2", "T1.4", "T2.1", "T2.2", "T2.3", "T2.4", "T3.2", "T4.1", "T4.2", "T4.3", "T5.1", "T6.3"],
+      "expected_files": ["src/receipt_graveyard/pipeline/orchestrator.py"],
+      "acceptance_criteria": [
+        "Processes folder of receipt images end-to-end",
+        "Each receipt gets a verdict stored in DB",
+        "Errors on individual receipts don't halt the batch",
+        "Summary statistics logged at completion"
+      ],
+      "verification_steps": [
+        "Integration test: feed data/sample_receipts/; all receipts processed; verdicts in DB"
+      ]
+    },
+    {
+      "id": "T7.2",
+      "phase": 7,
+      "title": "Implement CLI entry point",
+      "description": "CLI via argparse or click: python -m receipt_graveyard process --receipts <dir> --policy <file> --output <dir>",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T7.1", "T5.2"],
+      "expected_files": ["src/receipt_graveyard/cli.py"],
+      "acceptance_criteria": [
+        "CLI accepts --receipts, --policy, --output flags",
+        "Runs full pipeline and generates report files",
+        "Exits 0 on success, non-zero on fatal error"
+      ],
+      "verification_steps": [
+        "Run CLI command with sample data; assert exit 0 and report files created"
+      ]
+    },
+    {
+      "id": "T7.3",
+      "phase": 7,
+      "title": "End-to-end acceptance test with full sample dataset",
+      "description": "Run full pipeline on all sample receipts. Verify known duplicates detected, known violations caught, reports correct.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T7.2", "T1.3"],
+      "expected_files": ["tests/e2e/test_full_pipeline.py"],
+      "acceptance_criteria": [
+        "All 20+ sample receipts processed without crash",
+        "Known duplicates detected",
+        "Known policy violations caught",
+        "Reports generated with correct totals"
+      ],
+      "verification_steps": [
+        "pytest tests/e2e/ -v passes",
+        "Manual review of generated reports confirms expected verdicts"
+      ]
+    },
+    {
+      "id": "T8.1",
+      "phase": 8,
+      "title": "Implement FastAPI app scaffold & health endpoint",
+      "description": "Create FastAPI application with GET /health endpoint returning status ok.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.1"],
+      "expected_files": [
+        "src/receipt_graveyard/api/app.py",
+        "src/receipt_graveyard/api/routes/__init__.py"
+      ],
+      "acceptance_criteria": [
+        "GET /health returns {\"status\": \"ok\"}",
+        "App starts without errors"
+      ],
+      "verification_steps": [
+        "pytest with httpx TestClient; or curl localhost:8000/health"
+      ]
+    },
+    {
+      "id": "T8.2",
+      "phase": 8,
+      "title": "Implement receipt upload endpoint",
+      "description": "POST /receipts/ accepts image upload with metadata, triggers processing pipeline, returns receipt ID.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.1", "T7.1"],
+      "expected_files": ["src/receipt_graveyard/api/routes/receipts.py"],
+      "acceptance_criteria": [
+        "Accepts multipart image upload + JSON metadata",
+        "Returns 201 with receipt ID",
+        "Triggers pipeline processing"
+      ],
+      "verification_steps": [
+        "Test: upload image via TestClient; assert 201 + receipt ID returned"
+      ]
+    },
+    {
+      "id": "T8.3",
+      "phase": 8,
+      "title": "Implement verdict retrieval endpoint",
+      "description": "GET /receipts/{id}/verdict returns the verdict JSON for a processed receipt.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.1", "T6.2"],
+      "expected_files": ["src/receipt_graveyard/api/routes/verdicts.py"],
+      "acceptance_criteria": [
+        "Returns verdict JSON for a valid receipt ID",
+        "Returns 404 for unknown receipt ID"
+      ],
+      "verification_steps": [
+        "Test: process receipt, GET verdict; assert response matches expected"
+      ]
+    },
+    {
+      "id": "T8.4",
+      "phase": 8,
+      "title": "Implement report generation endpoint",
+      "description": "GET /employees/{id}/report?month=YYYY-MM returns monthly summary report.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.1", "T5.2"],
+      "expected_files": ["src/receipt_graveyard/api/routes/reports.py"],
+      "acceptance_criteria": [
+        "Returns JSON monthly summary for valid employee + month",
+        "Returns 404 for unknown employee",
+        "Returns empty report for months with no receipts"
+      ],
+      "verification_steps": [
+        "Test: after processing, GET report; assert valid JSON with correct totals"
+      ]
+    },
+    {
+      "id": "T8.5",
+      "phase": 8,
+      "title": "Add API error handling & input validation",
+      "description": "Add exception handlers and input validation middleware for all API endpoints.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.2", "T8.3", "T8.4"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "Invalid upload → 400 with error message",
+        "Missing receipt → 404",
+        "Server error → 500 with structured JSON body",
+        "All error responses have consistent schema"
+      ],
+      "verification_steps": [
+        "Tests for each error case: bad upload, missing ID, forced server error"
+      ]
+    },
+    {
+      "id": "T9.1",
+      "phase": 9,
+      "title": "Input validation & sanitisation",
+      "description": "Validate file type (image only), size limits (10MB), and prevent path traversal in filenames.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.2"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "Non-image files rejected with 400",
+        "Files > 10 MB rejected with 413",
+        "Filenames with ../ sanitised"
+      ],
+      "verification_steps": [
+        "Tests: upload .exe → 400; 15 MB file → 413; ../ in filename → sanitised"
+      ]
+    },
+    {
+      "id": "T9.2",
+      "phase": 9,
+      "title": "Rate limiting on API endpoints",
+      "description": "Add rate limiting middleware: ≤60 requests/min per IP (configurable).",
+      "priority": "medium",
+      "classification": "optional",
+      "status": "pending",
+      "dependencies": ["T8.1"],
+      "expected_files": [],
+      "acceptance_criteria": [
+        "61st rapid request returns 429",
+        "Rate limit configurable via env var"
+      ],
+      "verification_steps": [
+        "Test: 61 rapid requests → 429 on the 61st"
+      ]
+    },
+    {
+      "id": "T9.3",
+      "phase": 9,
+      "title": "Secrets & config management",
+      "description": "Load all configurable values from env vars / .env file. Create .env.example. No secrets in code.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T0.1"],
+      "expected_files": [
+        "src/receipt_graveyard/utils/config.py",
+        ".env.example"
+      ],
+      "acceptance_criteria": [
+        "All configurable values loaded from env/config",
+        "No secrets or hardcoded paths in source code",
+        ".env.example documents all variables"
+      ],
+      "verification_steps": [
+        "Grep codebase for hardcoded secrets",
+        "Review .env.example for completeness"
+      ]
+    },
+    {
+      "id": "T10.1",
+      "phase": 10,
+      "title": "Achieve ≥80% unit test coverage on core modules",
+      "description": "Write additional unit tests to achieve ≥80% coverage on extraction/, policy/, detection/ modules.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T7.1"],
+      "expected_files": ["tests/"],
+      "acceptance_criteria": [
+        "pytest --cov reports ≥80% on extraction/, policy/, detection/"
+      ],
+      "verification_steps": [
+        "Run pytest --cov=receipt_graveyard --cov-report=term-missing"
+      ]
+    },
+    {
+      "id": "T10.2",
+      "phase": 10,
+      "title": "Write integration tests for pipeline + DB",
+      "description": "Tests covering ingest → DB write → query → report generation flow.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T7.1", "T6.3"],
+      "expected_files": ["tests/integration/"],
+      "acceptance_criteria": [
+        "Tests cover full pipeline → DB → report flow",
+        "All integration tests pass"
+      ],
+      "verification_steps": [
+        "pytest tests/integration/ -v passes"
+      ]
+    },
+    {
+      "id": "T10.3",
+      "phase": 10,
+      "title": "Write API integration tests",
+      "description": "Tests covering all API endpoints, both success and error paths.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.5"],
+      "expected_files": ["tests/api/"],
+      "acceptance_criteria": [
+        "All endpoints tested for success and error paths",
+        "All API tests pass"
+      ],
+      "verification_steps": [
+        "pytest tests/api/ -v passes"
+      ]
+    },
+    {
+      "id": "T10.4",
+      "phase": 10,
+      "title": "Edge-case tests",
+      "description": "Test edge cases: empty image, corrupt file, zero-amount receipt, future date, negative amounts.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T7.1"],
+      "expected_files": ["tests/edge_cases/"],
+      "acceptance_criteria": [
+        "Each edge case handled gracefully (no crash)",
+        "Appropriate error or flag produced"
+      ],
+      "verification_steps": [
+        "pytest tests/edge_cases/ -v passes"
+      ]
+    },
+    {
+      "id": "T11.1",
+      "phase": 11,
+      "title": "Write README with setup, usage, and architecture overview",
+      "description": "Comprehensive README: project description, prerequisites, install, CLI usage, API usage, project structure, sample run.",
+      "priority": "high",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T7.2", "T8.1"],
+      "expected_files": ["README.md"],
+      "acceptance_criteria": [
+        "Covers: description, prerequisites, install, CLI usage, API usage, structure",
+        "Instructions work from scratch on a clean machine"
+      ],
+      "verification_steps": [
+        "Follow instructions from scratch; all steps succeed"
+      ]
+    },
+    {
+      "id": "T11.2",
+      "phase": 11,
+      "title": "Document expense policy YAML schema",
+      "description": "Document all supported policy rule types with examples and field descriptions.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T3.1"],
+      "expected_files": ["docs/policy_schema.md"],
+      "acceptance_criteria": [
+        "Every supported rule type documented with example",
+        "All fields described with types and constraints"
+      ],
+      "verification_steps": [
+        "Review doc against parser code; every rule type has an example"
+      ]
+    },
+    {
+      "id": "T11.3",
+      "phase": 11,
+      "title": "Generate & review OpenAPI spec",
+      "description": "Auto-generate OpenAPI spec from FastAPI. Review and verify all endpoints documented.",
+      "priority": "medium",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T8.5"],
+      "expected_files": ["docs/openapi.yaml"],
+      "acceptance_criteria": [
+        "Spec matches implemented endpoints",
+        "Importable into Swagger UI / Postman"
+      ],
+      "verification_steps": [
+        "Load spec in Swagger UI; verify all endpoints with correct schemas"
+      ]
+    },
+    {
+      "id": "T11.4",
+      "phase": 11,
+      "title": "Final release verification checklist",
+      "description": "Create and execute a release checklist: all tests pass, coverage met, docs complete, sample run works.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "pending",
+      "dependencies": ["T10.1", "T10.2", "T10.3", "T10.4", "T11.1", "T11.2", "T11.3"],
+      "expected_files": ["docs/release_checklist.md"],
+      "acceptance_criteria": [
+        "All tests pass",
+        "Coverage ≥80%",
+        "All docs complete",
+        "Sample run produces correct output",
+        "No critical TODOs remaining"
+      ],
+      "verification_steps": [
+        "Execute checklist line by line; all items green"
+      ]
+    }
+  ]
+}

@@ -399,9 +399,12 @@
       "description": "Evaluate a single Receipt against all applicable policy rules. Return violations list or pass.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T3.1", "T1.1"],
-      "expected_files": ["src/receipt_graveyard/policy/evaluator.py"],
+      "expected_files": [
+        "src/receipt_graveyard/policy/evaluator.py",
+        "tests/test_policy_evaluator.py"
+      ],
       "acceptance_criteria": [
         "Evaluates receipt against category caps",
         "Detects non-reimbursable items",
@@ -409,7 +412,9 @@
       ],
       "verification_steps": [
         "Unit tests: under limit → pass; over cap → violation; non-reimbursable → denied"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: pytest tests/ -v passed 39 tests with 1 real Tesseract integration test skipped due to the recorded T1.4 runtime blocker; six evaluator cases passed for under-cap pass, over-cap review with rule reference, non-reimbursable denial, word-boundary matching, currency mismatch review, and missing-amount review. Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T3.3",

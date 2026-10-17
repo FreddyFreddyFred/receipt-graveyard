@@ -219,3 +219,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** A policy document has `version: 1` and a non-empty `rules` list; `base_currency` is optional and defaults to USD. When supplied, it must be an uppercase ISO-style code. Rule IDs are unique. Supported rule types are `category_cap`, `non_reimbursable`, `city_daily_limit`, `context_limit`, `approval_threshold`, and `client_attendee_requirement`; each type has a closed, type-specific parameter schema. Unknown fields and rule types are rejected. YAML floating-point values in rule parameters are converted to `Decimal` after JSON Schema validation.
 **Rationale:** One versioned and strict format gives policy evaluation, sample data, and documentation a stable contract while preserving exact monetary values.
+
+## D22 — Per-Receipt Policy Evaluation Boundary
+
+**Status:** ✅ Decided
+**Decision:** T3.2 evaluates category caps against the sum of matching line items on the current receipt and detects non-reimbursable description matches. Over-cap amounts and incomplete amount data are flagged for review; non-reimbursable items are denied. A currency mismatch is flagged instead of comparing unlike amounts. The result carries structured violations with rule IDs and can be converted to the shared `Verdict` model. Aggregate daily/monthly/trip totals, context rules, and currency conversion remain with their later tasks.
+**Rationale:** Keep the evaluator accurate with the information available from one receipt, preserve audit references, and avoid false approvals when amounts or currencies cannot be safely compared.

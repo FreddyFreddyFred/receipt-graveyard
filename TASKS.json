@@ -164,13 +164,15 @@
       "description": "Create Pydantic models for Receipt, LineItem, Verdict, Employee, and PolicyRule with validation.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T0.2"],
       "expected_files": [
+        "DECISIONS.md",
         "src/receipt_graveyard/models/receipt.py",
         "src/receipt_graveyard/models/verdict.py",
         "src/receipt_graveyard/models/policy.py",
-        "src/receipt_graveyard/models/employee.py"
+        "src/receipt_graveyard/models/employee.py",
+        "tests/test_models.py"
       ],
       "acceptance_criteria": [
         "Models serialize/deserialize to JSON round-trip",
@@ -180,7 +182,9 @@
       "verification_steps": [
         "Unit tests: create instances, serialize to JSON, deserialize back, assert equality",
         "Unit tests: missing required fields raise ValidationError"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4; pytest tests/ -v passed 11 tests covering JSON round-trips for all five models, required-field ValidationError cases, and optional receipt defaults; ruff check . passed; pip check reported no broken requirements.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T1.2",

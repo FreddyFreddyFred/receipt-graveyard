@@ -207,3 +207,9 @@ MyApp/
 **Status:** ✅ Clarified
 **Decision:** T0.1 creates the root `src/receipt_graveyard/__init__.py` because its editable-install acceptance criteria require importing `receipt_graveyard`. T0.2 creates the remaining sub-package directories and initializers.
 **Rationale:** This keeps the dependency graph executable: a package must exist before T0.1 can verify installation and import, while T0.2 remains responsible for the complete D13 structure.
+
+## D20 — Core Model Contracts
+
+**Status:** ✅ Decided
+**Decision:** Represent money and quantities with `Decimal`. Receipt extraction fields, line-item quantity/amount details, and employee context metadata remain optional when source data is incomplete; a receipt's line-item collection defaults to empty. Line-item descriptions, employee IDs, policy rule IDs/types, and verdict receipt IDs/statuses are required. `PolicyRule` carries a rule `type` and generic `parameters`; T3.1 validates the type-specific schema. Verdict status values are `Approved`, `Flagged for Review`, and `Denied`, with empty-by-default reasons and rule IDs.
+**Rationale:** These contracts preserve incomplete OCR results, avoid binary floating-point arithmetic for money, and leave policy-rule validation to the task dedicated to the policy schema.

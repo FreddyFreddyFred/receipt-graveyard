@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "receipt-graveyard"
+version = "0.1.0"
+description = "Receipt image processing and expense policy compliance tools."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100",
+    "numpy>=1.24",
+    "opencv-python-headless>=4.8",
+    "Pillow>=10.0",
+    "pydantic>=2.0",
+    "PyYAML>=6.0",
+    "structlog>=23.1",
+]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.3"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

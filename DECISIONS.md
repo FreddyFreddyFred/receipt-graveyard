@@ -201,3 +201,9 @@ MyApp/
 **Status:** ✅ Approved for this task run
 **Decision:** Per the user's explicit instruction on 2026-10-18, merge the verified workspace setup into `main`, then commit and push each individually verified required task directly to `main`. Before each push, synchronize with `git pull --rebase`. This approval supersedes D16 only for the current task run; otherwise D16 remains the default.
 **Rationale:** The user requested a continuously updated `main` branch with each completed task pushed as soon as it passes acceptance checks.
+
+## D19 — Initial Installable Package Boundary
+
+**Status:** ✅ Clarified
+**Decision:** T0.1 creates the root `src/receipt_graveyard/__init__.py` because its editable-install acceptance criteria require importing `receipt_graveyard`. T0.2 creates the remaining sub-package directories and initializers.
+**Rationale:** This keeps the dependency graph executable: a package must exist before T0.1 can verify installation and import, while T0.2 remains responsible for the complete D13 structure.

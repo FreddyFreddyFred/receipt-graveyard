@@ -47,12 +47,12 @@
       "id": "T0.1",
       "phase": 0,
       "title": "Initialise Python project (pyproject.toml, requirements.txt, venv)",
-      "description": "Set up the Python project with build configuration, dependency list, virtual environment, and .gitignore.",
+      "description": "Set up the Python project with build configuration, planned runtime dependencies, an importable package root, a virtual environment, and .gitignore.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": [],
-      "expected_files": ["pyproject.toml", "requirements.txt", ".gitignore"],
+      "expected_files": ["pyproject.toml", "requirements.txt", ".gitignore", "src/receipt_graveyard/__init__.py"],
       "acceptance_criteria": [
         "Project installs in a fresh venv with pip install -e .",
         "python -c \"import receipt_graveyard\" succeeds",
@@ -62,7 +62,9 @@
         "Create fresh venv and run pip install -e .",
         "Run python -c \"import receipt_graveyard\"",
         "Run ruff check . (if configured)"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4 fresh .venv; pip install -e . and pip install -r requirements.txt succeeded; import receipt_graveyard resolved to src/receipt_graveyard/__init__.py; ruff check . passed with the declared dev extra; pip check reported no broken requirements; existing .gitignore excludes .venv and logs.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T0.2",

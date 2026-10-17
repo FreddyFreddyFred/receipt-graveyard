@@ -225,3 +225,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T3.2 evaluates category caps against the sum of matching line items on the current receipt and detects non-reimbursable description matches. Over-cap amounts and incomplete amount data are flagged for review; non-reimbursable items are denied. A currency mismatch is flagged instead of comparing unlike amounts. The result carries structured violations with rule IDs and can be converted to the shared `Verdict` model. Aggregate daily/monthly/trip totals, context rules, and currency conversion remain with their later tasks.
 **Rationale:** Keep the evaluator accurate with the information available from one receipt, preserve audit references, and avoid false approvals when amounts or currencies cannot be safely compared.
+
+## D23 — Perceptual Duplicate Hash
+
+**Status:** ✅ Decided
+**Decision:** T4.1 computes a 64-bit perceptual hash from a grayscale image resized to 32×32 and transformed with the 2-D DCT. It compares hashes using Hamming distance, with a default duplicate threshold of 10 differing bits; callers can choose a validated threshold from 0 through 64.
+**Rationale:** OpenCV is already a required project dependency, and this compact pHash supports resized and JPEG-recompressed image comparisons without adding a third-party package.

@@ -481,9 +481,12 @@
       "description": "Detect identical and near-identical receipt images using perceptual hashing (pHash).",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T1.1"],
-      "expected_files": ["src/receipt_graveyard/detection/duplicate.py"],
+      "expected_files": [
+        "src/receipt_graveyard/detection/duplicate.py",
+        "tests/test_duplicate.py"
+      ],
       "acceptance_criteria": [
         "Same image → detected as duplicate",
         "Same image resized/recompressed → detected as duplicate",
@@ -491,7 +494,9 @@
       ],
       "verification_steps": [
         "Unit tests: same image → dup; resized → dup; different → not dup"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: six focused pHash tests passed for identical images, resize plus JPEG recompression, visually different receipt rejection, threshold bounds, and 64-bit hash validation. Full pytest tests/ -v passed 45 tests with the separate real T1.4 Tesseract integration skipped; Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T4.2",

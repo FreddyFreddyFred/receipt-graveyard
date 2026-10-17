@@ -57,7 +57,7 @@
 
 | Status | ID | Task | Prerequisites | Expected Files | Acceptance Criteria | Verification |
 |--------|----|------|---------------|----------------|---------------------|--------------|
-| [ ] | T4.1 | Implement perceptual-hash duplicate detector | T1.1 | `src/receipt_graveyard/detection/duplicate.py` | Detects identical and near-identical image uploads using pHash | Unit tests: same image → duplicate; same image resized → duplicate; different receipt → not duplicate |
+| [x] | T4.1 | Implement perceptual-hash duplicate detector | T1.1 | `src/receipt_graveyard/detection/duplicate.py`, `tests/test_duplicate.py` | Detects identical and resized/recompressed receipt images using pHash; rejects distinct images | Python 3.14.4: six focused pHash tests passed; full suite 45 passed with one T1.4 Tesseract integration skipped; Ruff, pip check, graph Validate, and diff check passed |
 | [ ] | T4.2 | Implement semantic duplicate detector | T1.1, T2.1 | Extension of `detection/duplicate.py` | Detects receipts with matching (employee, vendor, date, amount) within tolerance | Unit tests: exact match → flagged; same employee+vendor, different date → not flagged |
 | [ ] | T4.3 | Implement cumulative limit tracker | T1.1, T3.2 | `src/receipt_graveyard/detection/accumulator.py` | Tracks per-employee running totals by category/day/month; flags when cumulative limit exceeded | Unit tests: 5 meals under individual limit but exceeding daily total → flagged on the 5th |
 | [ ] | T4.4 | Implement anomaly / fraud heuristics | T2.1 | `src/receipt_graveyard/detection/anomaly.py` | Flags: round-number totals, just-under-limit amounts, weekend non-travel, math mismatches | Unit tests for each heuristic with positive and negative examples |

@@ -6,6 +6,7 @@ This directory contains deterministic, locally generated receipt images and thei
 
 - `sample_receipts/` contains 22 PNG images: 20 unique receipts and two intentional duplicates.
 - `sample_policy.yaml` is a version 1 expense policy covering category caps, non-reimbursable items, city and context rules, approval thresholds, and client details.
+- `exchange_rates.json` is a fixed USD rate snapshot dated 2026-10-16. It supports deterministic tests and is not transaction-date pricing or a settlement quote.
 - `employee_manifest.json` maps all images to three fictional employees and records expected vendor, date, currency, total, line items, variant tags, and duplicate relationships.
 - `scripts/generate_sample_data.py` regenerates the image set and manifest deterministically. It refuses to overwrite a file whose content differs from the generated output.
 
@@ -21,6 +22,7 @@ The handwriting variant uses OpenCV's script font with small deterministic posit
 - The wine line on `receipt-018.png` should match the sample policy's non-reimbursable item rule.
 - `receipt-012.png` exceeds the sample USD daily meal cap when evaluated by the per-receipt rule engine.
 - Non-USD receipts require currency normalization before their values can be compared with USD policy limits.
+- Currency conversion rounds to the destination currency's configured minor-unit precision using half-up rounding. The rate file records the ECB reference-rate source and snapshot date.
 - `employee_manifest.json` is the ground truth for extraction and employee association checks.
 
 ## Manual Review Checklist
@@ -32,6 +34,7 @@ The handwriting variant uses OpenCV's script font with small deterministic posit
 - [x] Confirm all receipt employee IDs exist in the manifest's three-employee list.
 - [x] Confirm the sample policy loads as version 1 and contains all six supported rule types.
 - [x] Confirm the wine receipt is marked as non-reimbursable in the expected policy outcomes.
+- [x] Confirm the static exchange-rate file loads with a fixed as-of date and source metadata.
 
 ## Regeneration
 

@@ -321,11 +321,13 @@
       "description": "Detect currency from symbols/codes in receipt text. Convert to base currency using static exchange rates.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T1.1"],
       "expected_files": [
         "src/receipt_graveyard/extraction/currency.py",
-        "data/exchange_rates.json"
+        "data/exchange_rates.json",
+        "tests/test_currency.py",
+        "data/README.md"
       ],
       "acceptance_criteria": [
         "Detects $, €, £, ¥, and ISO codes (USD, EUR, GBP, JPY, etc.)",
@@ -334,7 +336,9 @@
       ],
       "verification_steps": [
         "Unit tests: convert GBP, EUR, JPY amounts; assert correct USD values"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: 16 focused currency tests passed for $, €, £, ¥ and ISO-code detection, ambiguity handling, unknown-currency warnings/defaults, GBP/EUR/JPY to USD, alternate base currency, precision, and invalid tables/amounts. Bundled 2026-10-16 ECB reference snapshot includes provenance and 30 currencies. Full pytest tests/ -v passed 75 tests with the separate real T1.4 Tesseract integration skipped; Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T2.3",

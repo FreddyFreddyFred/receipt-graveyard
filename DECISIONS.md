@@ -249,3 +249,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T1.3 uses generated, fictional receipts with deterministic ground-truth metadata. The dataset includes 20 unique PNGs plus exact and resized/recompressed duplicate copies, at least three employee IDs, four currency codes, and low-contrast, tilted, and script-font approximations of handwriting. The generator refuses to overwrite any existing output whose bytes differ from its deterministic result.
 **Rationale:** Synthetic fixtures provide known expected values without publishing real employee or purchase data, and deterministic generation makes tests repeatable while protecting local edits.
+
+## D27 — Static Currency Snapshot
+
+**Status:** ✅ Decided
+**Decision:** T2.2 uses a bundled USD-normalized rate table dated 2026-10-16. The currency module derives each USD-per-unit rate from the ECB's published EUR-base reference rates, detects the configured symbols and ISO codes, and rounds converted values to the destination currency's minor units. Missing or unsupported source currency defaults to the requested base with an explicit warning; conflicting markers raise an ambiguity error. The snapshot is for deterministic MVP checks, not historical transaction pricing or settlement.
+**Rationale:** A dated, sourced table follows the approved static-rate strategy, gives repeatable tests, and makes its limits visible to callers.

@@ -243,3 +243,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T0.3 configures structlog to write JSON records with timestamp, level, event, and bound context. `RECEIPT_GRAVEYARD_LOG_LEVEL` controls the minimum level; INFO is the default, with DEBUG, INFO, WARNING, ERROR, and CRITICAL accepted.
 **Rationale:** A predictable JSON event format supports local debugging and later pipeline integration without an external logging service.
+
+## D26 — Synthetic Receipt Fixtures
+
+**Status:** ✅ Decided
+**Decision:** T1.3 uses generated, fictional receipts with deterministic ground-truth metadata. The dataset includes 20 unique PNGs plus exact and resized/recompressed duplicate copies, at least three employee IDs, four currency codes, and low-contrast, tilted, and script-font approximations of handwriting. The generator refuses to overwrite any existing output whose bytes differ from its deterministic result.
+**Rationale:** Synthetic fixtures provide known expected values without publishing real employee or purchase data, and deterministic generation makes tests repeatable while protecting local edits.

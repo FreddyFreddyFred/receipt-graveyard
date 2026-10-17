@@ -1,0 +1,42 @@
+version: 1
+base_currency: USD
+rules:
+  - rule_id: meals.daily-cap
+    type: category_cap
+    category: meals
+    parameters:
+      limit: 75.00
+      period: daily
+  - rule_id: supplies.monthly-cap
+    type: category_cap
+    category: supplies
+    parameters:
+      limit: 500.00
+      period: monthly
+  - rule_id: alcohol.exclusion
+    type: non_reimbursable
+    parameters:
+      items: [alcohol, liquor, wine]
+  - rule_id: city.dining-limit
+    type: city_daily_limit
+    parameters:
+      limits:
+        New York: 125.00
+        other: 75.00
+  - rule_id: trip.meal-limit
+    type: context_limit
+    parameters:
+      context: trip
+      limit: 100.00
+  - rule_id: meals.manager-approval
+    type: approval_threshold
+    category: meals
+    parameters:
+      threshold: 200.00
+  - rule_id: meals.client-details
+    type: client_attendee_requirement
+    category: meals
+    parameters:
+      threshold: 100.00
+      require_client_name: true
+      minimum_attendees: 2

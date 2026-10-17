@@ -224,13 +224,15 @@
       "description": "Create ≥20 receipt images (clean, faded, rotated, handwritten, multi-currency, duplicates), sample policy YAML, employee manifest, and data/README.md.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T0.2"],
       "expected_files": [
         "data/sample_receipts/",
         "data/sample_policy.yaml",
         "data/employee_manifest.json",
-        "data/README.md"
+        "data/README.md",
+        "scripts/generate_sample_data.py",
+        "tests/test_sample_data.py"
       ],
       "acceptance_criteria": [
         "≥20 receipt images present",
@@ -242,7 +244,9 @@
       "verification_steps": [
         "File count check in data/sample_receipts/",
         "Review data/README.md for completeness"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: generated 22 PNG receipt images (20 unique plus two duplicate copies); manifest verifies all files map to three fictional employees, coverage includes clean/faded/rotated/script-font and USD/EUR/GBP/JPY, both exact and resized/JPEG-recompressed duplicate pairs are detected, and sample_policy.yaml loads all six rule types. Manual contact-sheet review completed and data/README.md checklist recorded. Four focused sample-data tests passed; full pytest tests/ -v passed 59 tests with the separate real T1.4 Tesseract integration skipped. Ruff, pip check, graph Validate, and diff check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T1.4",

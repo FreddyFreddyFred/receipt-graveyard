@@ -1,0 +1,455 @@
+{
+  "dataset_version": 1,
+  "description": "Synthetic receipts with ground-truth fields for local tests; no real people or transaction data.",
+  "employees": [
+    {
+      "employee_id": "employee-001",
+      "name": "Alex Example",
+      "department": "Finance",
+      "city": "New York",
+      "trip_id": "trip-ny-001"
+    },
+    {
+      "employee_id": "employee-002",
+      "name": "Blair Sample",
+      "department": "Engineering",
+      "city": "Boston",
+      "trip_id": "trip-bos-001"
+    },
+    {
+      "employee_id": "employee-003",
+      "name": "Casey Demo",
+      "department": "Marketing",
+      "city": "San Francisco",
+      "trip_id": "trip-sf-001"
+    }
+  ],
+  "receipts": [
+    {
+      "image": "receipt-001.png",
+      "employee_id": "employee-001",
+      "vendor": "Central Cafe",
+      "date": "2026-01-05",
+      "currency": "USD",
+      "total": "16.50",
+      "line_items": [
+        {
+          "description": "Coffee and sandwich",
+          "amount": "16.50",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-002.png",
+      "employee_id": "employee-002",
+      "vendor": "Metro Deli",
+      "date": "2026-01-06",
+      "currency": "USD",
+      "total": "25.00",
+      "line_items": [
+        {
+          "description": "Lunch special",
+          "amount": "25.00",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-003.png",
+      "employee_id": "employee-003",
+      "vendor": "Corner Market",
+      "date": "2026-01-07",
+      "currency": "USD",
+      "total": "18.75",
+      "line_items": [
+        {
+          "description": "Office snacks",
+          "amount": "18.75",
+          "category": "supplies"
+        }
+      ],
+      "tags": [
+        "faded"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-004.png",
+      "employee_id": "employee-001",
+      "vendor": "City Cab",
+      "date": "2026-01-08",
+      "currency": "USD",
+      "total": "32.40",
+      "line_items": [
+        {
+          "description": "Taxi fare",
+          "amount": "32.40",
+          "category": "transport"
+        }
+      ],
+      "tags": [
+        "rotated"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-005.png",
+      "employee_id": "employee-002",
+      "vendor": "Office Supply",
+      "date": "2026-01-09",
+      "currency": "USD",
+      "total": "45.19",
+      "line_items": [
+        {
+          "description": "Paper and pens",
+          "amount": "45.19",
+          "category": "supplies"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-006.png",
+      "employee_id": "employee-003",
+      "vendor": "Lotus Bistro",
+      "date": "2026-01-10",
+      "currency": "EUR",
+      "total": "43.20",
+      "line_items": [
+        {
+          "description": "Team dinner",
+          "amount": "43.20",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "multi_currency"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-007.png",
+      "employee_id": "employee-001",
+      "vendor": "Northstar Hotel",
+      "date": "2026-01-11",
+      "currency": "USD",
+      "total": "148.00",
+      "line_items": [
+        {
+          "description": "One night lodging",
+          "amount": "148.00",
+          "category": "lodging"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-008.png",
+      "employee_id": "employee-002",
+      "vendor": "Sushi House",
+      "date": "2026-01-12",
+      "currency": "JPY",
+      "total": "3200",
+      "line_items": [
+        {
+          "description": "Sushi set",
+          "amount": "3200",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "multi_currency"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-009.png",
+      "employee_id": "employee-003",
+      "vendor": "Rail Ticket",
+      "date": "2026-01-13",
+      "currency": "EUR",
+      "total": "21.50",
+      "line_items": [
+        {
+          "description": "Train ticket",
+          "amount": "21.50",
+          "category": "transport"
+        }
+      ],
+      "tags": [
+        "rotated_multi_currency"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-010.png",
+      "employee_id": "employee-001",
+      "vendor": "Green Grocer",
+      "date": "2026-01-14",
+      "currency": "USD",
+      "total": "18.22",
+      "line_items": [
+        {
+          "description": "Fruit basket",
+          "amount": "18.22",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "faded"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-011.png",
+      "employee_id": "employee-002",
+      "vendor": "Roastery",
+      "date": "2026-01-15",
+      "currency": "USD",
+      "total": "9.50",
+      "line_items": [
+        {
+          "description": "Coffee beans",
+          "amount": "9.50",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "handwritten"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-012.png",
+      "employee_id": "employee-003",
+      "vendor": "Skyline Dining",
+      "date": "2026-01-16",
+      "currency": "USD",
+      "total": "124.80",
+      "line_items": [
+        {
+          "description": "Client dinner",
+          "amount": "124.80",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "rotated"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-013.png",
+      "employee_id": "employee-001",
+      "vendor": "RideShare",
+      "date": "2026-01-17",
+      "currency": "GBP",
+      "total": "17.40",
+      "line_items": [
+        {
+          "description": "Ride to airport",
+          "amount": "17.40",
+          "category": "transport"
+        }
+      ],
+      "tags": [
+        "multi_currency"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-014.png",
+      "employee_id": "employee-002",
+      "vendor": "Bookshop",
+      "date": "2026-01-18",
+      "currency": "USD",
+      "total": "27.65",
+      "line_items": [
+        {
+          "description": "Reference books",
+          "amount": "27.65",
+          "category": "supplies"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-015.png",
+      "employee_id": "employee-003",
+      "vendor": "Tacos and Co",
+      "date": "2026-01-19",
+      "currency": "USD",
+      "total": "38.60",
+      "line_items": [
+        {
+          "description": "Team lunch",
+          "amount": "38.60",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "faded"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-016.png",
+      "employee_id": "employee-001",
+      "vendor": "Community Pharmacy",
+      "date": "2026-01-20",
+      "currency": "USD",
+      "total": "11.80",
+      "line_items": [
+        {
+          "description": "First aid supplies",
+          "amount": "11.80",
+          "category": "medical"
+        }
+      ],
+      "tags": [
+        "rotated"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-017.png",
+      "employee_id": "employee-002",
+      "vendor": "Harbor Cafe",
+      "date": "2026-02-03",
+      "currency": "USD",
+      "total": "22.10",
+      "line_items": [
+        {
+          "description": "Breakfast",
+          "amount": "22.10",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-018.png",
+      "employee_id": "employee-003",
+      "vendor": "Wine and Dine",
+      "date": "2026-02-04",
+      "currency": "USD",
+      "total": "117.00",
+      "line_items": [
+        {
+          "description": "Dinner",
+          "amount": "89.00",
+          "category": "meals"
+        },
+        {
+          "description": "Wine",
+          "amount": "28.00",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "clean"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-019.png",
+      "employee_id": "employee-001",
+      "vendor": "Paper Plane Cafe",
+      "date": "2026-02-05",
+      "currency": "USD",
+      "total": "65.00",
+      "line_items": [
+        {
+          "description": "Client lunch",
+          "amount": "65.00",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "handwritten"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-020.png",
+      "employee_id": "employee-002",
+      "vendor": "Transit Kiosk",
+      "date": "2026-02-06",
+      "currency": "JPY",
+      "total": "900",
+      "line_items": [
+        {
+          "description": "Metro pass",
+          "amount": "900",
+          "category": "transport"
+        }
+      ],
+      "tags": [
+        "faded_multi_currency"
+      ],
+      "duplicate_of": null
+    },
+    {
+      "image": "receipt-021-exact-duplicate.png",
+      "employee_id": "employee-002",
+      "vendor": "Central Cafe",
+      "date": "2026-01-05",
+      "currency": "USD",
+      "total": "16.50",
+      "line_items": [
+        {
+          "description": "Coffee and sandwich",
+          "amount": "16.50",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "seeded_duplicate",
+        "exact_duplicate"
+      ],
+      "duplicate_of": "receipt-001.png"
+    },
+    {
+      "image": "receipt-022-near-duplicate.png",
+      "employee_id": "employee-003",
+      "vendor": "Lotus Bistro",
+      "date": "2026-01-10",
+      "currency": "EUR",
+      "total": "43.20",
+      "line_items": [
+        {
+          "description": "Team dinner",
+          "amount": "43.20",
+          "category": "meals"
+        }
+      ],
+      "tags": [
+        "seeded_duplicate",
+        "near_duplicate",
+        "multi_currency"
+      ],
+      "duplicate_of": "receipt-006.png"
+    }
+  ]
+}

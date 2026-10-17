@@ -103,14 +103,9 @@
 
 ## D11 — Report Output Format
 
-**Status:** ❓ Needs decision  
-**Options:**
-- JSON (machine-consumable, easy to test)
-- Markdown (human-readable, renderable)
-- HTML (richer formatting)
-- All of the above (generate multiple formats)
-
-**Recommendation:** JSON as canonical + Markdown for human review. Defer HTML to optional.
+**Status:** ✅ Decided  
+**Decision:** JSON as the canonical machine-readable format + Markdown for human review. HTML deferred to optional post-MVP (O6).  
+**Rationale:** JSON is trivially testable (schema validation) and consumable by other tools. Markdown renders natively in GitHub, Slack, and most review tools without extra tooling. Keeping HTML optional avoids scope creep for the hackathon deadline.
 
 ---
 
@@ -173,3 +168,22 @@ MyApp/
 **Status:** ✅ Decided  
 **Decision:** When line items are extractable, sum them and compare to the stated total. Flag discrepancies exceeding a configurable tolerance (default: \$0.50 or 2%, whichever is greater).  
 **Rationale:** Thermal receipts often have OCR errors in digits; a small tolerance avoids false positives while still catching genuine mismatches.
+
+---
+
+## D16 — Branching Strategy
+
+**Status:** ✅ Decided  
+**Decision:** GitHub Flow — feature branches off `main`, merged via pull requests (self-reviewed for solo work).
+
+**Rules:**
+1. `main` is always in a working / passing-CI state. Never commit directly to `main`.
+2. Create a branch per task: `feature/T0.1-project-setup`, `feature/T1.2-preprocessing`, etc.
+3. Open a PR when the task acceptance criteria are met and all tests pass.
+4. Squash-merge into `main` to keep the history clean.
+5. Delete the feature branch after merge.
+
+**Branch naming convention:** `feature/<task-id>-<short-slug>` (e.g. `feature/T3.2-policy-evaluator`)  
+**Hotfix naming:** `fix/<short-slug>` (e.g. `fix/gitignore-missing`)
+
+**Rationale:** GitHub Flow is simple, low-overhead, and works well for solo or small-team hackathon projects. It keeps `main` deployable at all times and provides natural checkpoints (PRs) to verify acceptance criteria before merging.

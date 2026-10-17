@@ -67,9 +67,9 @@
 
 | Status | ID | Task | Prerequisites | Expected Files | Acceptance Criteria | Verification |
 |--------|----|------|---------------|----------------|---------------------|--------------|
-| [ ] | T5.1 | Implement verdict assembler (combine policy + detection results) | T3.2, T4.1, T4.2, T4.3, T4.4 | `src/receipt_graveyard/models/verdict.py` (extended), `src/receipt_graveyard/pipeline/verdict_assembler.py` | Produces final `Verdict` (Approved / Flagged / Denied) with list of human-readable reasons | Unit tests: receipt with 0 violations → Approved; 1 flag → Flagged; hard deny rule → Denied |
+| [ ] | T5.1 | Implement verdict assembler (combine policy + detection results) | T3.2, T3.3, T4.1, T4.2, T4.3, T4.4 | `src/receipt_graveyard/models/verdict.py` (extended), `src/receipt_graveyard/pipeline/verdict_assembler.py` | Produces final `Verdict` (Approved / Flagged / Denied) with list of human-readable reasons | Unit tests: receipt with 0 violations → Approved; 1 flag → Flagged; hard deny rule → Denied |
 | [ ] | T5.2 | Implement per-employee monthly summary report generator | T5.1 | `src/receipt_graveyard/reports/summary.py` | Generates JSON + Markdown report per employee: total spent, by category, verdicts, flags | Unit test: feed 10 verdicts for one employee; assert report contains correct totals and all verdicts |
-| [?] | T5.3 | Decide & implement report output formats | T5.2 | `src/receipt_graveyard/reports/formatter.py` | Produces output in chosen format(s) — see Decision D11 | Output file generated and validated (JSON schema check / Markdown renders correctly) |
+| [ ] | T5.3 | Implement report output formats (JSON canonical + Markdown) | T5.2 | `src/receipt_graveyard/reports/formatter.py` | Produces JSON and Markdown output — see Decision D11 | Output file generated and validated (JSON schema check / Markdown renders correctly) |
 
 ---
 
@@ -152,8 +152,9 @@ Phase 0 (Setup)
 Phase 2–4 (Core logic — largely parallel after Phase 1)
   │  T2.1 ──┬── T2.3, T2.4, T4.2, T4.4
   │          └── T3.5
-  │  T3.1 ── T3.2 ──┬── T3.3, T3.4, T3.5, T4.3
-  │                  └── T5.1
+  │  T3.1 ── T3.2 ──┬── T3.3 ──┬── T3.4, T3.5, T4.3
+  │                  │          └── T5.1
+  │                  └── T5.1 (direct)
   │  T4.1 ──── T5.1
   │
 Phase 5–6 (Assembly & persistence)

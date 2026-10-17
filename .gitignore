@@ -109,7 +109,7 @@ logs/
 
 # ── Project-specific ─────────────────────────────────────────────────────────
 # Generated reports (runtime output, not source)
-reports/
+/reports/
 
 # Uploaded receipt images at runtime (tracked separately if needed)
 data/uploaded_receipts/

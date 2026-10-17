@@ -73,9 +73,10 @@
       "description": "Create src/receipt_graveyard/ with all sub-packages (api, ocr, preprocessing, extraction, policy, detection, models, reports, utils, db, pipeline) and __init__.py files.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T0.1"],
       "expected_files": [
+        ".gitignore",
         "src/receipt_graveyard/__init__.py",
         "src/receipt_graveyard/api/__init__.py",
         "src/receipt_graveyard/ocr/__init__.py",
@@ -96,7 +97,9 @@
       "verification_steps": [
         "python -c \"from receipt_graveyard.ocr import __name__\" for each sub-package",
         "Compare directory tree to D13 spec"
-      ]
+      ],
+      "verification_evidence": "All 11 D13 subpackages imported from the editable install; directory comparison matched the approved structure; ruff check . passed; the root-anchored .gitignore leaves the source reports package trackable.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T0.3",

@@ -237,3 +237,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T4.3 uses a stateful, in-memory tracker that receives receipts in submission order and accumulates `category_cap` rules with daily or monthly periods by employee and rule. It flags the receipt that crosses the cap without changing prior results. Incomplete amounts or incomparable currencies taint the affected period and keep later checks flagged; trip-period rules are surfaced for review until trip context is available.
 **Rationale:** The running totals require batch state, and conservative flags prevent a missing amount or unsupported time window from causing a later receipt to appear compliant.
+
+## D25 — Structured Logging Configuration
+
+**Status:** ✅ Decided
+**Decision:** T0.3 configures structlog to write JSON records with timestamp, level, event, and bound context. `RECEIPT_GRAVEYARD_LOG_LEVEL` controls the minimum level; INFO is the default, with DEBUG, INFO, WARNING, ERROR, and CRITICAL accepted.
+**Rationale:** A predictable JSON event format supports local debugging and later pipeline integration without an external logging service.

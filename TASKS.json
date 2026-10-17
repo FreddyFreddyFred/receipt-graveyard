@@ -108,16 +108,21 @@
       "description": "Set up Python logging with structlog for structured JSON output at DEBUG/INFO/ERROR levels.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T0.1"],
-      "expected_files": ["src/receipt_graveyard/utils/logging.py"],
+      "expected_files": [
+        "src/receipt_graveyard/utils/logging.py",
+        "tests/test_logging.py"
+      ],
       "acceptance_criteria": [
         "Structured JSON logs emitted at DEBUG, INFO, and ERROR levels",
         "Logger configurable via environment variable"
       ],
       "verification_steps": [
         "Unit test writes log entries and asserts JSON structure"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: three focused tests passed for JSON DEBUG/INFO/ERROR events, contextual fields and timestamps, environment-based filtering, and invalid levels. Full pytest tests/ -v passed 55 tests with the separate real T1.4 Tesseract integration skipped; Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T0.4",

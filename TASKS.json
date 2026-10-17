@@ -524,9 +524,12 @@
       "description": "Track per-employee running totals by category, day, and month. Flag when cumulative limit exceeded.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T1.1", "T3.2"],
-      "expected_files": ["src/receipt_graveyard/detection/accumulator.py"],
+      "expected_files": [
+        "src/receipt_graveyard/detection/accumulator.py",
+        "tests/test_accumulator.py"
+      ],
       "acceptance_criteria": [
         "Tracks running totals per employee per category per day and per month",
         "Flags the receipt that causes limit to be exceeded",
@@ -534,7 +537,9 @@
       ],
       "verification_steps": [
         "Unit tests: 5 meals under individual limit but exceeding daily total → 5th flagged"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: seven focused tracker tests passed for daily cap crossing on the fifth receipt, monthly accumulation and rollover, employee isolation, incomplete-data and currency tainting, duplicate receipt protection, and required employee/date metadata. Full pytest tests/ -v passed 52 tests with the separate real T1.4 Tesseract integration skipped; Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T4.4",

@@ -231,3 +231,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T4.1 computes a 64-bit perceptual hash from a grayscale image resized to 32×32 and transformed with the 2-D DCT. It compares hashes using Hamming distance, with a default duplicate threshold of 10 differing bits; callers can choose a validated threshold from 0 through 64.
 **Rationale:** OpenCV is already a required project dependency, and this compact pHash supports resized and JPEG-recompressed image comparisons without adding a third-party package.
+
+## D24 — Cumulative Limit Tracker State
+
+**Status:** ✅ Decided
+**Decision:** T4.3 uses a stateful, in-memory tracker that receives receipts in submission order and accumulates `category_cap` rules with daily or monthly periods by employee and rule. It flags the receipt that crosses the cap without changing prior results. Incomplete amounts or incomparable currencies taint the affected period and keep later checks flagged; trip-period rules are surfaced for review until trip context is available.
+**Rationale:** The running totals require batch state, and conservative flags prevent a missing amount or unsupported time window from causing a later receipt to appear compliant.

@@ -193,11 +193,12 @@
       "description": "OpenCV-based pipeline: deskew, denoise, contrast enhancement, binarisation, crop/border removal.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T0.2"],
       "expected_files": [
         "src/receipt_graveyard/preprocessing/pipeline.py",
-        "src/receipt_graveyard/preprocessing/transforms.py"
+        "src/receipt_graveyard/preprocessing/transforms.py",
+        "tests/test_preprocessing.py"
       ],
       "acceptance_criteria": [
         "Rotated test image produces upright output",
@@ -207,7 +208,9 @@
       "verification_steps": [
         "Unit test: feed rotated image, assert output is upright (orientation detection)",
         "Visual inspection of before/after on sample images"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: pytest tests/ -v passed 19 tests; Ruff passed; pip check clean; synthetic rotated/faded receipt met orientation and binary contrast assertions, all five transform toggles and invalid input tests passed; before/after image visually inspected upright; controller Validate and safe Smoke passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T1.3",

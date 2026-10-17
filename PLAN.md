@@ -78,7 +78,7 @@
 
 | Status | ID | Task | Prerequisites | Expected Files | Acceptance Criteria | Verification |
 |--------|----|------|---------------|----------------|---------------------|--------------|
-| [ ] | T6.1 | Design SQLite schema (receipts, verdicts, employees, audit log) | T1.1 | `src/receipt_graveyard/db/schema.sql`, `db/migrations/001_initial.sql` | Schema creates all tables; foreign keys enforced; migration runs idempotently | Run migration on fresh DB; `sqlite3 test.db ".schema"` shows expected tables |
+| [x] | T6.1 | Design SQLite schema (receipts, verdicts, employees, audit log) | T1.1 | `src/receipt_graveyard/db/schema.sql`, `db/migrations/001_initial.sql`, `tests/test_db_schema.py` | Schema creates all tables; foreign keys enforced; migration runs idempotently | Python 3.14.4: 92 passed, one T1.4 OCR integration skipped; schema tests verified both SQL files idempotently, foreign-key rejection, verdict cascade, and audit retention; fresh file migration applied twice; Ruff, pip check, graph Validate, and diff check passed |
 | [ ] | T6.2 | Implement data-access layer (CRUD operations) | T6.1, T1.1 | `src/receipt_graveyard/db/repository.py` | Insert, query, update receipts and verdicts; transactions used for multi-step writes | Unit tests: insert receipt → query by ID → assert match; update verdict → assert changed |
 | [ ] | T6.3 | Integrate persistence into pipeline | T6.2, T5.1 | Modifications to pipeline modules | Full pipeline writes results to DB; re-running same receipt is idempotent | Integration test: process receipt, assert DB row; re-process, assert no duplicate row |
 

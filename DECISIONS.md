@@ -267,3 +267,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T3.3 accepts optional `ExpenseContext` metadata (`expense_type` and `city`) alongside a receipt. Trip/office limits are configurable `context_limit` policy rules; exceeding the selected context limit denies the receipt. City names match case-insensitively, with `other` as the generic fallback; missing context or a city with no generic entry uses the lowest configured limit. A city-limit breach on one receipt is flagged for review because per-receipt evaluation cannot account for all same-day spending.
 **Rationale:** Explicit metadata keeps employee identity separate from receipt OCR, conservative defaults avoid granting an allowance when context is unknown, and review status avoids treating a single receipt as a complete daily total.
+
+## D30 — Initial SQLite Persistence Schema
+
+**Status:** ✅ Decided
+**Decision:** T6.1 defines employees, receipts, verdicts, and audit_log tables with foreign-key relationships and idempotent `IF NOT EXISTS` creation. SQLite stores Decimal values and ISO dates as TEXT to preserve exact representations; line items and verdict reasons/rule IDs are JSON text columns. A receipt may reference an employee, a verdict is one-to-one with a receipt and cascades on receipt deletion, and audit events survive receipt deletion while their optional receipt reference is cleared. Both SQL files enable foreign keys for the migration connection; the repository must also enable `PRAGMA foreign_keys = ON` on every new connection.
+**Rationale:** A portable SQL schema preserves model data and exact money, keeps verdicts tied to their receipt, and retains audit history while ensuring referential checks are active.

@@ -653,11 +653,13 @@
       "description": "Design and create SQLite schema: receipts, verdicts, employees, audit_log tables. Write initial migration.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T1.1"],
       "expected_files": [
         "src/receipt_graveyard/db/schema.sql",
-        "src/receipt_graveyard/db/migrations/001_initial.sql"
+        "src/receipt_graveyard/db/migrations/001_initial.sql",
+        "tests/test_db_schema.py",
+        "DECISIONS.md"
       ],
       "acceptance_criteria": [
         "Schema creates all tables with appropriate columns and types",
@@ -666,7 +668,9 @@
       ],
       "verification_steps": [
         "Run migration on fresh DB; sqlite3 test.db '.schema' shows expected tables"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: full pytest passed 92 tests with one real Tesseract integration skipped for the recorded T1.4 blocker; two schema/migration tests passed for idempotent application, required tables, foreign-key enforcement, verdict cascade, and audit-log retention. Applied 001_initial.sql twice to a fresh temporary SQLite file and confirmed employees, receipts, verdicts, audit_log, and PRAGMA foreign_keys=1. Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T6.2",

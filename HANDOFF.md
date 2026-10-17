@@ -2,7 +2,7 @@
 
 The approved project scope and original 48-task plan are in `PROJECT.md`, `PLAN.md`, `TASKS.json`, and `DECISIONS.md`. The repository is `FreddyFreddyFred/receipt-graveyard`; the workspace update is on clean branch `feature/T0.0-recoverable-controller` based directly on upstream `main`.
 
-`T0.0` is verified: controller `Validate` and `Smoke` passed against all 49 tasks. The ledger was unchanged by smoke. Run `git pull --rebase`, push `feature/T0.0-recoverable-controller`, and open the project-required pull request. `T0.1` is the next required task; do not start it until this branch is synchronized.
+`T0.0` is verified: controller `Validate` and `Smoke` passed against all 49 tasks. The ledger was unchanged by smoke. Branch `feature/T0.0-recoverable-controller` is pushed and [PR #1](https://github.com/FreddyFreddyFred/receipt-graveyard/pull/1) is open. Review and squash-merge it per D16; `T0.1` is next.
 
 To run the controller from the repository root, use:
 

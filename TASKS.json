@@ -679,9 +679,13 @@
       "description": "Repository pattern for receipts, verdicts, employees. Insert, query, update with transaction support.",
       "priority": "high",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T6.1", "T1.1"],
-      "expected_files": ["src/receipt_graveyard/db/repository.py"],
+      "expected_files": [
+        "src/receipt_graveyard/db/repository.py",
+        "tests/test_repository.py",
+        "DECISIONS.md"
+      ],
       "acceptance_criteria": [
         "Insert receipt → query by ID → matches",
         "Update verdict → assert changed",
@@ -689,7 +693,9 @@
       ],
       "verification_steps": [
         "Unit tests: CRUD operations with assertions on returned data"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4: full working-tree pytest passed 98 tests with one real Tesseract integration skipped; suite includes the separately blocked, uncommitted T1.4 OCR tests. Six repository cases and two schema cases passed for employee/receipt/verdict CRUD, Decimal and model round-trips, foreign-key effects, audit history, atomic rollback on audit failure, and in-memory persistence. Ruff, pip check, task graph Validate, and git diff --check passed.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T6.3",

@@ -273,3 +273,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** T6.1 defines employees, receipts, verdicts, and audit_log tables with foreign-key relationships and idempotent `IF NOT EXISTS` creation. SQLite stores Decimal values and ISO dates as TEXT to preserve exact representations; line items and verdict reasons/rule IDs are JSON text columns. A receipt may reference an employee, a verdict is one-to-one with a receipt and cascades on receipt deletion, and audit events survive receipt deletion while their optional receipt reference is cleared. Both SQL files enable foreign keys for the migration connection; the repository must also enable `PRAGMA foreign_keys = ON` on every new connection.
 **Rationale:** A portable SQL schema preserves model data and exact money, keeps verdicts tied to their receipt, and retains audit history while ensuring referential checks are active.
+
+## D31 — Transactional SQLite Repository
+
+**Status:** ✅ Decided
+**Decision:** T6.2 exposes `ReceiptRepository` with employee, receipt, and verdict insert/query/update/delete operations plus idempotent initialization. It opens a connection per operation and enables foreign keys on every connection. Each write and its audit-log event share one transaction, so either both persist or neither does. Decimal values are formatted as fixed-point text and model collections are serialized as compact JSON text.
+**Rationale:** This keeps persistence explicit, preserves exact monetary values and model fields, and prevents an entity update from succeeding without its corresponding audit record.

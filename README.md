@@ -77,7 +77,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -A
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -Action Complete -TaskId T0.1 -AcceptancePassed -Evidence "Describe the checks run and their results"
 ```
 
-If work cannot proceed, record the exact reason with `-Action Block -TaskId <ID> -Reason "..."`. Use `-Action Unblock -TaskId <ID>` after the blocker is resolved. Keep `PLAN.md`, `STATE.md`, and `HANDOFF.md` synchronized with each ledger change. Stage only files in the active task's scope, commit on a `feature/` branch, run `git pull --rebase`, and push that branch.
+If work cannot proceed, record the exact reason with `-Action Block -TaskId <ID> -Reason "..."`. Use `-Action Unblock -TaskId <ID>` after the blocker is resolved. Keep `PLAN.md`, `STATE.md`, and `HANDOFF.md` synchronized with each ledger change. D18 records this run's user approval to commit each verified task directly to `main`; stage only the task's intended files, run `git pull --rebase`, and push `main` after the commit.
 
 ## Quick Start (Once Implemented)
 

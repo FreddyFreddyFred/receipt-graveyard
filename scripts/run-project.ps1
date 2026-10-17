@@ -221,7 +221,7 @@ try {
         }
         'Status' {
             foreach ($task in $state.Tasks) {
-                $suffix = if ([string]$task.status -eq 'blocked') { " — $($task.blocked_reason)" } else { '' }
+                $suffix = if ([string]$task.status -eq 'blocked') { " - $($task.blocked_reason)" } else { '' }
                 Write-Host ("{0,-8} {1,-14} {2,-12} priority={3}{4}" -f $task.id, $task.status, $task.classification, $task.priority, $suffix)
             }
             Write-ProjectLog -Message 'action=status result=reported'
@@ -229,7 +229,7 @@ try {
         'Next' {
             $next = @(Get-ReadyTasks -TaskList $state.Tasks -AllowOptional:$IncludeOptional) | Select-Object -First 1
             if ($null -eq $next) { Show-Blockers -TaskList $state.Tasks }
-            else { Write-Host ("Next ready task: {0} (priority {1}) — {2}" -f $next.id, $next.priority, $next.title) }
+            else { Write-Host ("Next ready task: {0} (priority {1}) - {2}" -f $next.id, $next.priority, $next.title) }
             Write-ProjectLog -Message 'action=next result=reported'
         }
         'Run' {
@@ -239,7 +239,7 @@ try {
                 $next = @(Get-ReadyTasks -TaskList $state.Tasks -AllowOptional:$IncludeOptional) | Select-Object -First 1
                 if ($null -eq $next) { Show-Blockers -TaskList $state.Tasks; Write-Host 'No task state was changed.' }
                 elseif (-not $PreflightConfirmed) {
-                    Write-Host ("Next ready task: {0} — {1}" -f $next.id, $next.title)
+                    Write-Host ("Next ready task: {0} - {1}" -f $next.id, $next.title)
                     Write-Host 'Review PROJECT.md, relevant files, and Git state, then rerun with -PreflightConfirmed.'
                     Write-Host 'No task state was changed.'
                 }
@@ -271,7 +271,7 @@ try {
             if (Has-Property -Object $selected[0] -Name 'blocked_reason') { $selected[0].blocked_reason = $null }
             Save-TaskDocument -Document $state.Document
             Write-ProjectLog -Message ("task-verified id={0}" -f $TaskId)
-            Write-Host ("Verified task '{0}'. Update PLAN.md, STATE.md, and HANDOFF.md, review the diff, stage only its intended files, commit, pull --rebase, and push the feature branch." -f $TaskId)
+            Write-Host ("Verified task '{0}'. Update PLAN.md, STATE.md, and HANDOFF.md, review the diff, stage only its intended files, commit, pull --rebase, and push to main as authorized by D18." -f $TaskId)
         }
         'Block' {
             if ([string]::IsNullOrWhiteSpace($TaskId)) { throw 'Block requires -TaskId.' }

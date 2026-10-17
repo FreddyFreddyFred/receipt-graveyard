@@ -10,4 +10,4 @@
 - Do not discard user changes, reset the repository, or perform destructive cleanup. Do not deploy, publish, spend money, expose secrets, or run destructive database migrations without explicit approval.
 - Keep credentials and other secrets out of tracked files and all execution logs. The `logs/` directory is local and ignored by Git.
 - Do not invent product requirements. If the approved application scope is unavailable, record the blocker and stop application implementation.
-- Follow D16 in `DECISIONS.md`: never commit directly to `main`; create a `feature/<task-id>-<short-slug>` branch, push it, and open a pull request after acceptance checks pass. Squash-merge only through the approved pull-request workflow.
+- Follow D16 in `DECISIONS.md` unless a later decision records an explicit user-approved workflow change. D18 records approval for this task run to commit and push each verified task directly to `main`; pull with rebase before pushing. Outside that approved run, use D16 feature branches and pull requests.

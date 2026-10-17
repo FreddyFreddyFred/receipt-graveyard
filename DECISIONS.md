@@ -195,3 +195,9 @@ MyApp/
 **Status:** ✅ Decided
 **Decision:** Keep the existing `TASKS.json` schema and task graph as canonical. The Windows PowerShell controller validates that schema, requires verified prerequisites before starting dependent tasks, and stores logs only in the ignored `logs/` directory.
 **Rationale:** Preserve the approved 48-task project plan while adding task-by-task recovery across sessions.
+
+## D18 — User-Approved Main-Branch Task Run
+
+**Status:** ✅ Approved for this task run
+**Decision:** Per the user's explicit instruction on 2026-10-18, merge the verified workspace setup into `main`, then commit and push each individually verified required task directly to `main`. Before each push, synchronize with `git pull --rebase`. This approval supersedes D16 only for the current task run; otherwise D16 remains the default.
+**Rationale:** The user requested a continuously updated `main` branch with each completed task pushed as soon as it passes acceptance checks.

@@ -9,6 +9,7 @@
 
 | Status | ID | Task | Prerequisites | Expected Files | Acceptance Criteria | Verification |
 |--------|----|------|---------------|----------------|---------------------|--------------|
+| [x] | T0.0 | Add recoverable workspace tracking and a safe task controller | — | `AGENTS.md`, `README.md`, `STATE.md`, `HANDOFF.md`, `TASKS.json`, `PLAN.md`, `DECISIONS.md`, `scripts/run-project.ps1` | Existing project plan and tasks are preserved; controller validates task graph and records recoverable status | `Validate` and safe `Smoke` passed for all 49 tasks; task ledger unchanged |
 | [ ] | T0.1 | Initialise Python project (pyproject.toml, requirements.txt, venv) | — | `pyproject.toml`, `requirements.txt`, `.gitignore` | Project installs in a fresh venv with `pip install -e .`; linting passes | Run `pip install -e .` in a new venv; `python -c "import receipt_graveyard"` succeeds |
 | [ ] | T0.2 | Create directory structure & package skeleton | T0.1 | `src/receipt_graveyard/__init__.py` + all sub-package `__init__.py` files | All sub-packages importable; directory matches D13 layout | `python -c "from receipt_graveyard.ocr import __name__"` etc. for each sub-package |
 | [ ] | T0.3 | Configure logging framework | T0.1 | `src/receipt_graveyard/utils/logging.py` | Structured JSON logs emitted at DEBUG/INFO/ERROR levels | Unit test writes log entries and asserts JSON structure |

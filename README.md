@@ -54,6 +54,31 @@ It replaces manual finance-team receipt review and removes friction for employee
 
 ---
 
+## Windows Task Workflow
+
+The PowerShell controller manages the planned task queue. It does not implement the application or run project checks by itself; Codex performs the task work and records the results.
+
+Run these commands from the repository root in PowerShell:
+
+```powershell
+# 1. Check task IDs, dependencies, prerequisites, and cycles.
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -Action Validate
+
+# 2. Safely exercise graph validation without changing TASKS.json or running the app.
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -Action Smoke
+
+# 3. See the next ready task without starting it.
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -Action Next
+
+# 4. After reviewing PROJECT.md, the task files, and Git status, start one task.
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -Action Run -PreflightConfirmed
+
+# 5. After implementation and acceptance checks pass, record verification evidence.
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-project.ps1 -Action Complete -TaskId T0.1 -AcceptancePassed -Evidence "Describe the checks run and their results"
+```
+
+If work cannot proceed, record the exact reason with `-Action Block -TaskId <ID> -Reason "..."`. Use `-Action Unblock -TaskId <ID>` after the blocker is resolved. Keep `PLAN.md`, `STATE.md`, and `HANDOFF.md` synchronized with each ledger change. Stage only files in the active task's scope, commit on a `feature/` branch, run `git pull --rebase`, and push that branch.
+
 ## Quick Start (Once Implemented)
 
 ```bash

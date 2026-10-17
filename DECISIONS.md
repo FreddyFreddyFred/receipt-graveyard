@@ -187,3 +187,11 @@ MyApp/
 **Hotfix naming:** `fix/<short-slug>` (e.g. `fix/gitignore-missing`)
 
 **Rationale:** GitHub Flow is simple, low-overhead, and works well for solo or small-team hackathon projects. It keeps `main` deployable at all times and provides natural checkpoints (PRs) to verify acceptance criteria before merging.
+
+---
+
+## D17 — Recoverable Task Controller
+
+**Status:** ✅ Decided
+**Decision:** Keep the existing `TASKS.json` schema and task graph as canonical. The Windows PowerShell controller validates that schema, requires verified prerequisites before starting dependent tasks, and stores logs only in the ignored `logs/` directory.
+**Rationale:** Preserve the approved 48-task project plan while adding task-by-task recovery across sessions.

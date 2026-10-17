@@ -3,7 +3,7 @@
     "project": "The Receipt Graveyard",
     "version": "1.0.0",
     "created": "2026-10-17",
-    "total_tasks": 48,
+    "total_tasks": 49,
     "status_legend": {
       "pending": "Not started",
       "in_progress": "Currently being worked on",
@@ -13,6 +13,36 @@
     }
   },
   "tasks": [
+    {
+      "id": "T0.0",
+      "phase": 0,
+      "title": "Add recoverable workspace tracking and a safe task controller",
+      "description": "Add permanent project rules, recovery notes, status tracking, and a Windows PowerShell controller while preserving the approved project plan and task graph.",
+      "priority": "critical",
+      "classification": "required",
+      "status": "verified",
+      "dependencies": [],
+      "expected_files": [
+        "AGENTS.md",
+        "README.md",
+        "STATE.md",
+        "HANDOFF.md",
+        "TASKS.json",
+        "PLAN.md",
+        "DECISIONS.md",
+        "scripts/run-project.ps1"
+      ],
+      "acceptance_criteria": [
+        "The upstream project requirements, decisions, plan, and 48 existing task records are preserved.",
+        "The controller validates task IDs, dependencies, cycles, verified prerequisites, task priority, and required versus optional classification.",
+        "The tracking files record current status, verification evidence, blockers, and a clear continuation action."
+      ],
+      "verification_steps": [
+        "Run scripts/run-project.ps1 -Action Validate.",
+        "Run scripts/run-project.ps1 -Action Smoke and confirm TASKS.json remains unchanged."
+      ],
+      "verification_evidence": "On 2026-10-18, scripts/run-project.ps1 -Action Validate passed for all 49 tasks. Safe Smoke rejected duplicate IDs, missing dependencies, cycles, and unverified prerequisites; required-task priority selection passed and TASKS.json remained unchanged. No application commands ran."
+    },
     {
       "id": "T0.1",
       "phase": 0,

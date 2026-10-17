@@ -13,7 +13,7 @@
 | [x] | T0.1 | Initialise Python project (pyproject.toml, requirements.txt, venv) | — | `pyproject.toml`, `requirements.txt`, `.gitignore`, `src/receipt_graveyard/__init__.py` | Project installs in a fresh venv with `pip install -e .`; package import succeeds; linting passes on the skeleton | Python 3.14.4 fresh `.venv`: editable install, requirements install, package import, `ruff check .`, and `pip check` passed |
 | [x] | T0.2 | Create directory structure & package skeleton | T0.1 | `.gitignore`, `src/receipt_graveyard/__init__.py` + all sub-package `__init__.py` files | All sub-packages importable; directory matches D13 layout | All 11 D13 sub-package imports passed; directory comparison and `ruff check .` passed; source `reports` package is trackable |
 | [ ] | T0.3 | Configure logging framework | T0.1 | `src/receipt_graveyard/utils/logging.py` | Structured JSON logs emitted at DEBUG/INFO/ERROR levels | Unit test writes log entries and asserts JSON structure |
-| [ ] | T0.4 | Set up test framework (pytest, fixtures, conftest) | T0.1, T0.2 | `tests/conftest.py`, `pytest.ini` or section in `pyproject.toml` | `pytest` discovers and runs a trivial smoke test | `pytest tests/ -v` exits 0 |
+| [x] | T0.4 | Set up test framework (pytest, fixtures, conftest) | T0.1, T0.2 | `pyproject.toml`, `tests/conftest.py`, `tests/test_smoke.py` | `pytest` discovers and runs a trivial smoke test | Python 3.14.4: `pytest tests/ -v` passed 1 test; Ruff and `pip check` passed |
 | [ ] | T0.5 | Set up CI linting config (ruff / black / mypy) | T0.1 | `.ruff.toml` or `ruff` section in `pyproject.toml` | `ruff check .` and `mypy src/` exit 0 on skeleton | Run both commands; zero errors |
 
 ---

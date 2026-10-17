@@ -126,16 +126,18 @@
       "description": "Configure pytest with conftest.py, shared fixtures, and a trivial smoke test.",
       "priority": "critical",
       "classification": "required",
-      "status": "pending",
+      "status": "verified",
       "dependencies": ["T0.1", "T0.2"],
-      "expected_files": ["tests/conftest.py", "tests/test_smoke.py"],
+      "expected_files": ["pyproject.toml", "tests/conftest.py", "tests/test_smoke.py"],
       "acceptance_criteria": [
         "pytest discovers and runs a trivial smoke test",
         "pytest exits 0"
       ],
       "verification_steps": [
         "Run pytest tests/ -v and confirm exit code 0"
-      ]
+      ],
+      "verification_evidence": "Python 3.14.4 .venv; pytest tests/ -v discovered and passed 1 smoke test; ruff check . passed; pip check reported no broken requirements.",
+      "verified_at": "2026-10-18"
     },
     {
       "id": "T0.5",
